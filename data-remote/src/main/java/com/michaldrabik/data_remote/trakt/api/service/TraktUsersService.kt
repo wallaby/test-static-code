@@ -3,7 +3,6 @@ package com.michaldrabik.data_remote.trakt.api.service
 import com.michaldrabik.data_remote.trakt.model.CustomList
 import com.michaldrabik.data_remote.trakt.model.HiddenItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
-import com.michaldrabik.data_remote.trakt.model.SyncExportResult
 import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.data_remote.trakt.model.User
 import com.michaldrabik.data_remote.trakt.model.request.CreateListRequest
@@ -30,12 +29,12 @@ interface TraktUsersService {
   @POST("users/hidden/progress_watched")
   suspend fun postHiddenShows(
     @Body request: SyncExportRequest,
-  ): SyncExportResult
+  )
 
   @POST("users/hidden/calendar")
   suspend fun postHiddenMovies(
     @Body request: SyncExportRequest,
-  ): SyncExportResult
+  )
 
   @GET("users/hidden/calendar?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
@@ -79,17 +78,17 @@ interface TraktUsersService {
   suspend fun postAddListItems(
     @Path("id") listId: Long,
     @Body request: SyncExportRequest,
-  ): SyncExportResult
+  )
 
   @POST("users/me/lists/{id}/items/remove")
   suspend fun postRemoveListItems(
     @Path("id") listId: Long,
     @Body request: SyncExportRequest,
-  ): SyncExportResult
+  )
 
   @POST("users/hidden/{section}/remove")
   suspend fun deleteHidden(
     @Path("section") section: String,
     @Body request: SyncExportRequest,
-  ): SyncExportResult
+  )
 }

@@ -26,6 +26,10 @@ android {
     }
   }
 
+  packagingOptions {
+    exclude 'META-INF/*.md'
+  }
+
   namespace 'com.michaldrabik.test_base'
 }
 
