@@ -1,2 +1,1 @@
-* New brand icon and small UI updates
-* Dependencies bump
+* Fix issue where Instant Sync would post an error notification after syncing.
