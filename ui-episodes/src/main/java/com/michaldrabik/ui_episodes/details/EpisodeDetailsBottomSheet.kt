@@ -249,7 +249,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
             if (state.rateAllowed == true) {
               openRateDialog()
             } else {
-              renderSnackbar(MessageEvent.Info(R.string.textSignBeforeRate))
+              renderSnackbar(MessageEvent.Info(R.string.textSignBefore))
             }
           }
           if (state.hasRating()) {

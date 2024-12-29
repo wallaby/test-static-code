@@ -333,7 +333,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         if (rating.rateAllowed == true) {
           openRateDialog()
         } else {
-          showSnack(MessageEvent.Info(R.string.textSignBeforeRate))
+          showSnack(MessageEvent.Info(R.string.textSignBefore))
         }
       }
     }
