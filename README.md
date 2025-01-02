@@ -6,18 +6,11 @@
 
 If you use and enjoy Showly OSS, consider buying me a coffee as a support for my work. Thanks!
 
-# Showly is coming to iOS! 🍎
+# Showly available on iOS 🍎
 
-I am happy to announce that Showly is coming to iOS!
+I am happy to announce that starting Jan 2025, Showly is available on iOS!
 
-Public open testing is available NOW.
-Read all the details here:
-
-https://x.com/AppShowly/status/1869418653210538247
-
-or jump straight into TestFlight:
-
-https://testflight.apple.com/join/UM44YZmM
+Check AppStore link below to jump straight into action.
 
 # Showly
 
@@ -32,7 +25,7 @@ The OSS version for Android available in this repo is completely free of all Goo
     height="80"
     src="https://github.com/user-attachments/assets/3e49d1b3-1046-4e76-ad50-dfd859c23f3a"/></a>
 &nbsp;&nbsp;
-<a href="https://testflight.apple.com/join/UM44YZmM"><img
+<a href="https://apps.apple.com/us/app/6739016219"><img
     alt="Get it on App Store"
     height="80"
     src="https://github.com/user-attachments/assets/f43c7c55-01d8-4ac3-99dd-ca8e0f574283"/></a>
