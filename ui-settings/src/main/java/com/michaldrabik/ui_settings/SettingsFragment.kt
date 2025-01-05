@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.viewBinding
 import com.michaldrabik.ui_settings.databinding.FragmentSettingsBinding
 import com.michaldrabik.ui_settings.sections.spoilers.SettingsSpoilersFragment
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter
+import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.BACKUP
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.GENERAL
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.MISC
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.NOTIFICATIONS
@@ -91,6 +92,7 @@ class SettingsFragment :
       settingsCategoryNotifications.visibleIf(filter == NOTIFICATIONS || filter == null)
       settingsCategorySpoilers.visibleIf(filter == SPOILERS || filter == null)
       settingsCategoryWidgets.visibleIf(filter == WIDGETS || filter == null)
+      settingsCategoryBackup.visibleIf(filter == BACKUP || filter == null)
       settingsCategoryMisc.visibleIf(filter == MISC || filter == null)
     }
   }

@@ -58,7 +58,14 @@
         android:checkable="true"
         android:text="@string/textSettingsWidgets"
         />
-      
+
+      <com.google.android.material.chip.Chip
+        android:id="@+id/backupChip"
+        style="@style/ShowlyChip.Filter"
+        android:checkable="true"
+        android:text="@string/textSettingsBackup"
+        />
+
       <com.google.android.material.chip.Chip
         android:id="@+id/miscChip"
         style="@style/ShowlyChip.Filter"

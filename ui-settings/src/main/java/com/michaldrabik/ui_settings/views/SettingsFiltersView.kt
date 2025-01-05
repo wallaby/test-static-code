@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.core.view.children
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_settings.databinding.ViewSettingsFiltersBinding
+import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.BACKUP
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.GENERAL
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.MISC
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.NOTIFICATIONS
@@ -54,6 +55,10 @@ class SettingsFiltersView : FrameLayout {
         selectedFilter = if (selectedFilter == WIDGETS) null else WIDGETS
         onFilterClick?.invoke(selectedFilter)
       }
+      backupChip.onClick(safe = false) {
+        selectedFilter = if (selectedFilter == BACKUP) null else BACKUP
+        onFilterClick?.invoke(selectedFilter)
+      }
       miscChip.onClick(safe = false) {
         selectedFilter = if (selectedFilter == MISC) null else MISC
         onFilterClick?.invoke(selectedFilter)
@@ -71,6 +76,7 @@ class SettingsFiltersView : FrameLayout {
     NOTIFICATIONS,
     SPOILERS,
     WIDGETS,
+    BACKUP,
     MISC,
   }
 }

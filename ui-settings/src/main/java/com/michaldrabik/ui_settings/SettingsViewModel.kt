@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,12 +19,6 @@ class SettingsViewModel @Inject constructor() : ViewModel(),
 
   private val premiumState = MutableStateFlow(false)
   private val filterState = MutableStateFlow<SettingsFilter?>(null)
-
-  fun loadSettings() {
-    viewModelScope.launch {
-      premiumState.value = false
-    }
-  }
 
   fun setFilter(filter: SettingsFilter?) {
     filterState.value = filter
