@@ -18,6 +18,7 @@ import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
 import com.michaldrabik.ui_backup.model.BackupShows
 import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.coroutines.async
@@ -72,6 +73,7 @@ internal class BackupImportShowsRunner @Inject constructor(
   ) {
     for (show in backupShows.collectionHistory) {
       Timber.d("Importing show ${show.traktId} ...")
+      statusListener?.invoke(Importing(show.title))
 
       if (localCollection.contains(show.traktId)) {
         if (showsRepository.myShows.exists(IdTrakt(show.traktId))) {
@@ -115,6 +117,8 @@ internal class BackupImportShowsRunner @Inject constructor(
   ) {
     for (show in backupShows.collectionWatchlist) {
       Timber.d("Importing show ${show.traktId} ...")
+      statusListener?.invoke(Importing(show.title))
+
       if (localCollection.contains(show.traktId)) {
         Timber.d("Show already in collection. Skipping.")
         continue
@@ -139,6 +143,8 @@ internal class BackupImportShowsRunner @Inject constructor(
   ) {
     for (show in backupShows.collectionHidden) {
       Timber.d("Importing show ${show.traktId} ...")
+      statusListener?.invoke(Importing(show.title))
+
       if (localCollection.contains(show.traktId)) {
         Timber.d("Show already in collection. Skipping.")
         continue

@@ -8,8 +8,6 @@
   <string name="textBackupImport">Import data</string>
   <string name="textBackupImportDescription">Import your shows and movies data from a backup file.\n\nYour current collection will not be removed and only missing items will be added.</string>
 
-  <string name="textBackupImporting">Importing…</string>
-  <string name="textBackupExporting">Exporting…</string>
   <string name="textBackupExportSuccess">Data exported successfully.</string>
   <string name="textBackupImportSuccess">Data imported successfully.</string>
 

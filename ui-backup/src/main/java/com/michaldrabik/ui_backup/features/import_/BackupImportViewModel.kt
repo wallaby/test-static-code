@@ -2,6 +2,8 @@ package com.michaldrabik.ui_backup.features.import_
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Idle
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Initializing
 import com.michaldrabik.ui_backup.features.import_.workers.BackupImportWorker
 import com.michaldrabik.ui_backup.model.BackupScheme
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -26,29 +29,34 @@ class BackupImportViewModel @Inject constructor(
 
   private val initialState = BackupImportUiState()
 
-  private val loadingState = MutableStateFlow(initialState.isLoading)
+  private val importingState = MutableStateFlow(initialState.isImporting)
   private val successState = MutableStateFlow(initialState.isSuccess)
   private val errorState = MutableStateFlow(initialState.isError)
 
+  init {
+    backupImportWorker.statusListener = { status ->
+      importingState.update { status }
+      Timber.d("Importing state: $status")
+    }
+  }
+
   fun runImport(jsonInput: String) {
-    if (loadingState.value) return
+    if (importingState.value != Idle) return
     viewModelScope.launch {
       try {
-        loadingState.update { true }
+        importingState.update { Initializing }
         delay(1.seconds)
         val importScheme = createImportData(jsonInput)
         if (importScheme != null) {
           backupImportWorker.run(importScheme)
           successState.update { true }
-        } else {
-          errorState.update { Error("Invalid Showly backup file.") }
         }
       } catch (error: Throwable) {
         rethrowCancellation(error) {
           errorState.update { error }
         }
       } finally {
-        loadingState.update { false }
+        importingState.update { Idle }
       }
     }
   }
@@ -58,23 +66,32 @@ class BackupImportViewModel @Inject constructor(
       .Builder()
       .add(KotlinJsonAdapterFactory())
       .build()
+
     val jsonAdapter = moshi.adapter(BackupScheme::class.java)
-    return jsonAdapter.fromJson(jsonInput)
+
+    return try {
+      jsonAdapter.fromJson(jsonInput)
+    } catch (error: Throwable) {
+      rethrowCancellation(error) {
+        errorState.update { Error("Invalid Showly backup file.\n${error.localizedMessage}") }
+      }
+      null
+    }
   }
 
   fun clearState() {
-    loadingState.update { false }
+    importingState.update { Idle }
     successState.update { false }
     errorState.update { null }
   }
 
   val uiState = combine(
-    loadingState,
+    importingState,
     successState,
     errorState,
   ) { s1, s2, s3 ->
     BackupImportUiState(
-      isLoading = s1,
+      isImporting = s1,
       isSuccess = s2,
       isError = s3,
     )

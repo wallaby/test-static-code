@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.michaldrabik.ui_backup.R
 import com.michaldrabik.ui_backup.databinding.FragmentBackupImportBinding
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Idle
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Initializing
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.events.MessageEvent.Error
@@ -121,7 +124,7 @@ class BackupImportFragment : BaseFragment<BackupImportViewModel>(R.layout.fragme
   }
 
   override fun onDestroyView() {
-    if (viewModel.uiState.value.isLoading) {
+    if (viewModel.uiState.value.isImporting != Idle) {
       showSnack(Error(R.string.errorImportCancelled))
     } else {
       snackbar?.dismiss()
@@ -132,18 +135,31 @@ class BackupImportFragment : BaseFragment<BackupImportViewModel>(R.layout.fragme
   private fun render(uiState: BackupImportUiState) {
     uiState.run {
       with(binding) {
-        progressBar.visibleIf(isLoading)
-        statusText.visibleIf(isLoading)
-        importButton.visibleIf(!isLoading, gone = false)
-        importButton.isEnabled = !isLoading
+        progressBar.visibleIf(isImporting != Idle)
+        importButton.visibleIf(isImporting == Idle, gone = false)
+        importButton.isEnabled = isImporting == Idle
       }
+      renderImportStatus(uiState)
+
       if (isSuccess) {
         showSuccessSnack()
         viewModel.clearState()
       }
+
       if (isError != null) {
         showErrorSnack(isError)
         viewModel.clearState()
+      }
+    }
+  }
+
+  private fun renderImportStatus(uiState: BackupImportUiState) {
+    with(binding) {
+      statusText.visibleIf(uiState.isImporting != Idle)
+      statusText.text = when (uiState.isImporting) {
+        is Idle -> ""
+        is Initializing -> "Importing..."
+        is Importing -> "Importing...\n\n\"${uiState.isImporting.title}\""
       }
     }
   }

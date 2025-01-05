@@ -10,6 +10,7 @@ import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
 import com.michaldrabik.ui_backup.model.BackupMovies
 import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.coroutines.withContext
@@ -91,6 +92,8 @@ internal class BackupImportMoviesRunner @Inject constructor(
   ) {
     for (movie in backupMovies.collectionWatchlist) {
       Timber.d("Importing movie ${movie.traktId} ...")
+      statusListener?.invoke(Importing(movie.title))
+
       if (localCollection.contains(movie.traktId)) {
         Timber.d("Movie already in collection. Skipping.")
         continue
@@ -115,6 +118,8 @@ internal class BackupImportMoviesRunner @Inject constructor(
   ) {
     for (movie in backupMovies.collectionHidden) {
       Timber.d("Importing movie ${movie.traktId} ...")
+      statusListener?.invoke(Importing(movie.title))
+
       if (localCollection.contains(movie.traktId)) {
         Timber.d("Movie already in collection. Skipping.")
         continue

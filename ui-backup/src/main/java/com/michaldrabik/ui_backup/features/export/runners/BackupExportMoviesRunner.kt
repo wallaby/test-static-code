@@ -52,6 +52,7 @@ internal class BackupExportMoviesRunner @Inject constructor(
         BackupMovie(
           traktId = it.idTrakt,
           tmdbId = it.idTmdb,
+          title = it.title,
           addedAt = dateIsoStringFromMillis(it.updatedAt),
         )
       }
@@ -59,6 +60,7 @@ internal class BackupExportMoviesRunner @Inject constructor(
         BackupMovie(
           traktId = it.idTrakt,
           tmdbId = it.idTmdb,
+          title = it.title,
           addedAt = dateIsoStringFromMillis(it.createdAt),
         )
       }
@@ -66,6 +68,7 @@ internal class BackupExportMoviesRunner @Inject constructor(
         BackupMovie(
           traktId = it.idTrakt,
           tmdbId = it.idTmdb,
+          title = it.title,
           addedAt = dateIsoStringFromMillis(it.createdAt),
         )
       }

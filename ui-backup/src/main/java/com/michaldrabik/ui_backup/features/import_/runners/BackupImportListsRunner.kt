@@ -9,6 +9,7 @@ import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
 import com.michaldrabik.ui_backup.model.BackupList
 import com.michaldrabik.ui_backup.model.BackupListItem
 import com.michaldrabik.ui_backup.model.BackupLists
@@ -39,8 +40,11 @@ internal class BackupImportListsRunner @Inject constructor(
     withContext(dispatchers.IO) {
       val localLists = localSource.customLists.getAll()
       for (backupList in backup.lists) {
+        statusListener?.invoke(Importing(backupList.name))
+
         val idCheck = localLists.any { it.id == backupList.id }
         val traktIdCheck = backupList.traktId != null && localLists.any { it.idTrakt == backupList.traktId }
+
         if (traktIdCheck || idCheck) {
           // Custom lists already exists locally
           importExistingCustomList(backupList)

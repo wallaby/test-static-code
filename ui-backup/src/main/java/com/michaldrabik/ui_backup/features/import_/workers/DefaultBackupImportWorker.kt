@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_backup.features.import_.workers
 
+import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus
 import com.michaldrabik.ui_backup.features.import_.runners.BackupImportListsRunner
 import com.michaldrabik.ui_backup.features.import_.runners.BackupImportMoviesRunner
 import com.michaldrabik.ui_backup.features.import_.runners.BackupImportShowsRunner
@@ -16,6 +17,14 @@ internal class DefaultBackupImportWorker @Inject constructor(
   private val importMoviesRunner: BackupImportMoviesRunner,
   private val importListsRunner: BackupImportListsRunner,
 ) : BackupImportWorker {
+
+  override var statusListener: ((BackupImportStatus) -> Unit)? = null
+    set(value) {
+      field = value
+      importShowsRunner.statusListener = field
+      importMoviesRunner.statusListener = field
+      importListsRunner.statusListener = field
+    }
 
   override suspend fun run(backup: BackupScheme) {
     coroutineScope {

@@ -61,6 +61,7 @@ internal class BackupExportShowsRunner @Inject constructor(
         BackupShow(
           traktId = it.idTrakt,
           tmdbId = it.idTmdb,
+          title = it.title,
           addedAt = dateIsoStringFromMillis(it.createdAt),
           updatedAt = dateIsoStringFromMillis(it.updatedAt),
         )
@@ -69,6 +70,7 @@ internal class BackupExportShowsRunner @Inject constructor(
         BackupShow(
           traktId = it.idTrakt,
           tmdbId = it.idTmdb,
+          title = it.title,
           addedAt = dateIsoStringFromMillis(it.createdAt),
           updatedAt = dateIsoStringFromMillis(it.updatedAt),
         )
@@ -77,6 +79,7 @@ internal class BackupExportShowsRunner @Inject constructor(
         BackupShow(
           traktId = it.idTrakt,
           tmdbId = it.idTmdb,
+          title = it.title,
           addedAt = dateIsoStringFromMillis(it.createdAt),
           updatedAt = dateIsoStringFromMillis(it.updatedAt),
         )

@@ -15,6 +15,7 @@ data class BackupShows(
 data class BackupShow(
   @Json(name = "id") val traktId: Long,
   @Json(name = "tmId") val tmdbId: Long,
+  @Json(name = "t") val title: String,
   @Json(name = "a") val addedAt: String,
   @Json(name = "u") val updatedAt: String,
 )
