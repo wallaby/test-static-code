@@ -8,6 +8,8 @@ interface SeasonsLocalDataSource {
 
   suspend fun getAllByShowsIdsChunk(traktIds: List<Long>): List<Season>
 
+  suspend fun getAllWatched(): List<Season>
+
   suspend fun getAllWatchedForShows(traktIds: List<Long>): List<Season>
 
   suspend fun getAllWatchedIdsForShows(traktIds: List<Long>): List<Long>

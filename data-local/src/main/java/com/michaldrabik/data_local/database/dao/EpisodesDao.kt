@@ -124,6 +124,9 @@ interface EpisodesDao : EpisodesLocalDataSource {
   )
   override suspend fun getWatchedCount(showTraktId: Long): Int
 
+  @Query("SELECT * FROM episodes WHERE is_watched = 1")
+  override suspend fun getAllWatched(): List<Episode>
+
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1")
   override suspend fun getAllWatchedForShows(showsIds: List<Long>): List<Episode>
 
