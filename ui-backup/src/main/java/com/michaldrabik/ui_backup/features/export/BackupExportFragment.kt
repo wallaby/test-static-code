@@ -23,6 +23,10 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.seconds
 
@@ -84,8 +88,40 @@ class BackupExportFragment : BaseFragment<BackupExportViewModel>(R.layout.fragme
     uri: Uri,
     content: String,
   ) {
-    context?.contentResolver?.openOutputStream(uri)?.use { stream ->
-      stream.write(content.toByteArray())
+    context?.contentResolver?.openOutputStream(uri, "wt")?.use { stream ->
+      stream.write(content.trim().toByteArray())
+    }
+  }
+
+  private fun validateExportFile(uri: Uri) {
+    var inputStream: InputStream? = null
+    var reader: BufferedReader? = null
+
+    try {
+      inputStream = requireContext().contentResolver.openInputStream(uri)
+      reader = BufferedReader(InputStreamReader(inputStream))
+
+      val stringBuilder = StringBuilder()
+      var line: String?
+
+      while (reader.readLine().also { line = it } != null) {
+        stringBuilder.append(line)
+      }
+
+      val jsonInput = stringBuilder.toString()
+      viewModel
+        .validateExportData(jsonInput)
+        .onSuccess { showShareSnack(uri) }
+        .onFailure {
+          showErrorSnack(it)
+          Timber.e(it)
+        }
+    } catch (error: Throwable) {
+      showErrorSnack(error)
+      Timber.e(error)
+    } finally {
+      inputStream?.close()
+      reader?.close()
     }
   }
 
@@ -106,9 +142,7 @@ class BackupExportFragment : BaseFragment<BackupExportViewModel>(R.layout.fragme
       message = getString(R.string.textBackupExportSuccess),
       actionText = R.string.textShare,
       length = 10.seconds.inWholeMilliseconds.toInt(),
-      action = {
-        shareNewExport(uri)
-      },
+      action = { shareNewExport(uri) },
     )
   }
 
@@ -134,7 +168,7 @@ class BackupExportFragment : BaseFragment<BackupExportViewModel>(R.layout.fragme
       }
       exportContent?.let {
         saveNewExport(it.exportUri, it.exportContent)
-        showShareSnack(it.exportUri)
+        validateExportFile(it.exportUri)
         viewModel.clearState()
       }
       if (error != null) {

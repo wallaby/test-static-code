@@ -63,6 +63,29 @@ class BackupExportViewModel @Inject constructor(
     }
   }
 
+  fun validateExportData(jsonInput: String): Result<BackupScheme> {
+    val moshi = Moshi
+      .Builder()
+      .add(KotlinJsonAdapterFactory())
+      .build()
+
+    val jsonAdapter = moshi.adapter(BackupScheme::class.java)
+    val jsonError = Error("Failed to validate export file. Please try again or contact us if this keeps happening.")
+
+    try {
+      val result = jsonAdapter.fromJson(jsonInput)
+      result?.let {
+        return Result.success(it)
+      }
+      return Result.failure(jsonError)
+    } catch (error: Throwable) {
+      rethrowCancellation(error) {
+        errorState.update { jsonError }
+      }
+      return Result.failure(jsonError)
+    }
+  }
+
   fun clearState() {
     loadingState.update { false }
     exportContentState.update { null }
