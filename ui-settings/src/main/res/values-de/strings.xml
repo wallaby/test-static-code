@@ -65,6 +65,11 @@
   <string name="textSettingsDateSelectionMessage">Wählen Sie die Standard-Datumsauswahloption aus.</string>
   <string name="textSettingsTabletColumnsTitle">Anzahl der Spalten</string>
   <string name="textSettingsTabletColumnsSummary">Wählen Sie die bevorzugte Spaltenanzahl für Listen.</string>
+  <string name="textSettingsBackup">Sichern &amp; Wiederherstellen</string>
+  <string name="textSettingsBackupExportTitle">Exportieren</string>
+  <string name="textSettingsBackupExportDescription">Exportiere deine Daten, um ein Backup zu erstellen oder sie auf ein neues Gerät zu übertragen.</string>
+  <string name="textSettingsBackupImportTitle">Importieren</string>
+  <string name="textSettingsBackupImportDescription">Importiere deine Sicherungsdatei, um Daten auf diesem Gerät wiederherzustellen.</string>
   <string name="textSettingsSpoilers">Spoiler</string>
   <string name="textSettingsSpoilersShows">Serien</string>
   <string name="textSettingsSpoilersShowsSummary">Spoilereinstellungen für Serien verwalten.</string>
