@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.view.children
+import com.google.android.material.chip.Chip
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_settings.databinding.ViewSettingsFiltersBinding
 import com.michaldrabik.ui_settings.views.SettingsFiltersView.SettingsFilter.BACKUP
@@ -63,6 +64,13 @@ class SettingsFiltersView : FrameLayout {
         selectedFilter = if (selectedFilter == MISC) null else MISC
         onFilterClick?.invoke(selectedFilter)
       }
+    }
+  }
+
+  fun clear() {
+    selectedFilter = null
+    binding.chipsGroup.children.forEach {
+      (it as? Chip)?.isChecked = false
     }
   }
 

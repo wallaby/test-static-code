@@ -61,6 +61,12 @@ class SettingsFragment :
     )
   }
 
+  override fun onStop() {
+    binding.settingsFilters.clear()
+    viewModel.setFilter(null)
+    super.onStop()
+  }
+
   private fun setupView() {
     with(binding) {
       settingsToolbar.setOnClickListener { activity?.onBackPressed() }
