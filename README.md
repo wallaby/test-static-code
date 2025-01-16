@@ -89,7 +89,9 @@ A few things surely could be addressed:
 
 Want to help translating Showly into your native language? Spotted a mistake?<br>
 Join the CrowdIn project which is used to manage translations:<br>
-https://crwd.in/showly-android-app <br>
+
+Android: https://crowdin.com/project/showly-android-app <br>
+iOS: https://crowdin.com/project/showly-ios-app <br>
 
 Translations status for 5 Aug 2024:
 
