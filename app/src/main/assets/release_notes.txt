@@ -1,1 +1,2 @@
-* Fix issue where Instant Sync would post an error notification after syncing.
+* Added new backup and restore feature
+* Added filter chips in the settings screen for easier navigation
