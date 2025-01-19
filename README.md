@@ -93,9 +93,15 @@ Join the CrowdIn project which is used to manage translations:<br>
 Android: https://crowdin.com/project/showly-android-app <br>
 iOS: https://crowdin.com/project/showly-ios-app <br>
 
-Translations status for 5 Aug 2024:
+Translations status for 20 Jan 2025:
 
-![Screenshot 2024-08-05 at 11-32-21 Showly Android App dashboard in Crowdin](https://github.com/user-attachments/assets/5b5b1796-2ad7-4519-be63-e0a05c275406)
+iOS:
+
+![image](https://github.com/user-attachments/assets/81a460ca-344e-4dd1-8df6-319945dd5d36)
+
+Android:
+
+![image](https://github.com/user-attachments/assets/32c7177d-9e5c-4252-a01b-4b40bc707da3)
 
 ## FAQ
 
