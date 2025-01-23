@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
@@ -40,12 +39,17 @@ import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportListsRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
+import com.michaldrabik.ui_base.trakt.receivers.ListLimitNotificationReceiver
+import com.michaldrabik.ui_base.trakt.receivers.ListLimitNotificationReceiver.Key.CUSTOM_LIST_NOTIFICATION_SNOOZED_AT
+import com.michaldrabik.ui_base.trakt.receivers.WatchlistLimitNotificationReceiver
+import com.michaldrabik.ui_base.trakt.receivers.WatchlistLimitNotificationReceiver.Key.WATCHLIST_NOTIFICATION_SNOOZED_AT
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
 import javax.inject.Named
+import kotlin.time.Duration.Companion.days
 
 @SuppressLint("MissingPermission")
 @HiltWorker
@@ -60,6 +64,7 @@ class TraktSyncWorker @AssistedInject constructor(
   private val exportListsRunner: TraktExportListsRunner,
   private val eventsManager: EventsManager,
   private val userManager: UserTraktManager,
+  @Named("syncPreferences") private val syncPreferences: SharedPreferences,
   @Named("miscPreferences") private val miscPreferences: SharedPreferences,
 ) : TraktNotificationWorker(context, workerParams) {
 
@@ -71,15 +76,16 @@ class TraktSyncWorker @AssistedInject constructor(
     private const val SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val SYNC_NOTIFICATION_COMPLETE_PROGRESS_ID = 823
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_ID = 828
-    private const val SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID = 832
+    const val SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID = 832
+    const val SYNC_NOTIFICATION_COMPLETE_ERROR_WATCHLIST_ID = 833
 
     const val KEY_LAST_SYNC_TIMESTAMP = "KEY_LAST_SYNC_TIMESTAMP"
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
     private const val ARG_IS_SILENT = "ARG_IS_SILENT"
 
-    private const val TRAKT_LISTS_INFO_URL =
-      "https://twitter.com/trakt/status/1536751362943332352?s=20&t=bdlxpzlDIclkLqdihaAXqw"
+    const val TRAKT_LISTS_INFO_URL =
+      "https://releasenotes.trakt.tv/release/Y2LCE-january-21-2025"
 
     fun scheduleOneOff(
       workManager: WorkManager,
@@ -233,7 +239,7 @@ class TraktSyncWorker @AssistedInject constructor(
     try {
       exportWatchlistRunner.run()
     } catch (error: Throwable) {
-      handleListsError(error, R.string.errorTraktSyncWatchlistLimitsReached)
+      handleWatchlistError(error)
     }
   }
 
@@ -244,7 +250,7 @@ class TraktSyncWorker @AssistedInject constructor(
     try {
       exportListsRunner.run()
     } catch (error: Throwable) {
-      handleListsError(error, R.string.errorTraktSyncListsLimitsReached)
+      handleListsError(error)
     }
   }
 
@@ -282,19 +288,66 @@ class TraktSyncWorker @AssistedInject constructor(
     Logger.record(error, "TraktSyncWorker::handleError()")
   }
 
-  private fun handleListsError(
-    error: Throwable,
-    @StringRes notificationMessageResId: Int,
-  ) {
+  private fun handleListsError(error: Throwable) {
     when (ErrorHelper.parse(error)) {
       ShowlyError.AccountLimitsError -> {
+        val snoozedAt = syncPreferences.getLong(CUSTOM_LIST_NOTIFICATION_SNOOZED_AT, 0)
+        if (snoozedAt > 0 && nowUtcMillis() - snoozedAt < 30.days.inWholeMilliseconds) {
+          Timber.d("Custom lists limit notification snoozed")
+          return
+        }
+
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TRAKT_LISTS_INFO_URL))
+        val intent2 = Intent(context, ListLimitNotificationReceiver::class.java)
+
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
-        val action = NotificationCompat.Action(R.drawable.ic_info, "More Info", pendingIntent)
+        val pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+
+        val action = NotificationCompat.Action(R.drawable.ic_info, "More info", pendingIntent)
+        val action2 = NotificationCompat.Action(R.drawable.ic_info, "Snooze for 30 days", pendingIntent2)
 
         notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
-          createErrorNotification(R.string.textTraktSync, notificationMessageResId, action),
+          createErrorNotification(
+            titleTextRes = R.string.textTraktSync,
+            bigTextRes = R.string.errorTraktSyncListsLimitsReached,
+            actions = listOf(action, action2),
+          ),
+        )
+      }
+
+      else -> throw error
+    }
+  }
+
+  private fun handleWatchlistError(error: Throwable) {
+    when (ErrorHelper.parse(error)) {
+      ShowlyError.AccountLimitsError -> {
+        val theme = settingsRepository.theme
+
+        val snoozedAt = syncPreferences.getLong(WATCHLIST_NOTIFICATION_SNOOZED_AT, 0)
+        if (snoozedAt > 0 && nowUtcMillis() - snoozedAt < 30.days.inWholeMilliseconds) {
+          Timber.d("Watchlist limit notification snoozed")
+          return
+        }
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(TRAKT_LISTS_INFO_URL))
+        val intent2 = Intent(context, WatchlistLimitNotificationReceiver::class.java)
+
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+        val pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, FLAG_IMMUTABLE or FLAG_UPDATE_CURRENT)
+
+        val action = NotificationCompat.Action(R.drawable.ic_info, "More info", pendingIntent)
+        val action2 = NotificationCompat.Action(R.drawable.ic_info, "Snooze for 30 days", pendingIntent2)
+
+        notificationManager().notify(
+          SYNC_NOTIFICATION_COMPLETE_ERROR_WATCHLIST_ID,
+          createErrorNotification(
+            theme = theme,
+            titleTextRes = R.string.textTraktSync,
+            bigTextRes = R.string.errorTraktSyncWatchlistLimitsReached,
+            actions = listOf(action, action2),
+          ),
         )
       }
 
