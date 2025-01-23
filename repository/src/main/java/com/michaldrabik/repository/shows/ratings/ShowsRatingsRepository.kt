@@ -72,6 +72,16 @@ class ShowsRatingsRepository @Inject constructor(
     }
   }
 
+  suspend fun loadSeasonsRatings(): List<Rating> {
+    val ratings = localSource.ratings.getAllByType(TYPE_SEASON)
+    return ratings
+  }
+
+  suspend fun loadEpisodesRatings(): List<Rating> {
+    val ratings = localSource.ratings.getAllByType(TYPE_EPISODE)
+    return ratings
+  }
+
   suspend fun loadRatings(shows: List<Show>): List<TraktRating> {
     val ratings = mutableListOf<Rating>()
     shows.chunked(CHUNK_SIZE).forEach { chunk ->

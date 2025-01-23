@@ -6,6 +6,8 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.ui_backup.model.BackupList
 import com.michaldrabik.ui_backup.model.BackupListItem
 import com.michaldrabik.ui_backup.model.BackupLists
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,14 +30,27 @@ internal class BackupExportListsRunner @Inject constructor(
       val exportLists = mutableListOf<BackupList>()
 
       val localLists = localSource.customLists.getAll()
+
       localLists.forEach { list ->
         val localItems = localSource.customListsItems.getItemsById(list.id)
+
+        val localShowIds = localItems.filter { it.type == "show" }.map { it.idTrakt }
+        val localMovieIds = localItems.filter { it.type == "movie" }.map { it.idTrakt }
+
+        val localShowTmdbIdsAsync = async { localSource.shows.getAllTmdbIds(traktIds = localShowIds) }
+        val localMovieTmdbIdsAsync = async { localSource.movies.getAllTmdbIds(traktIds = localMovieIds) }
+        val (localShowTmdbIds, localMovieTmdbIds) = awaitAll(localShowTmdbIdsAsync, localMovieTmdbIdsAsync)
 
         val backupItems = localItems.map {
           BackupListItem(
             id = it.id,
             listId = list.id,
             traktId = it.idTrakt,
+            tmdbId = when (it.type) {
+              "show" -> localShowTmdbIds.getOrDefault(it.idTrakt, -1)
+              "movie" -> localMovieTmdbIds.getOrDefault(it.idTrakt, -1)
+              else -> -1
+            },
             type = it.type,
             rank = it.rank,
             listedAt = dateIsoStringFromMillis(it.listedAt),

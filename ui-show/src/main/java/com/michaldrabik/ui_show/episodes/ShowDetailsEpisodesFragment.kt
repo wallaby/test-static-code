@@ -279,7 +279,12 @@ class ShowDetailsEpisodesFragment :
       }
       viewModel.loadSeasonRating()
     }
-    val bundle = RatingsBottomSheet.createBundle(season.ids.trakt, Type.SEASON)
+
+    val bundle = RatingsBottomSheet.createBundle(
+      id = season.ids.trakt,
+      type = Type.SEASON,
+      seasonNumber = season.number,
+    )
     navigateToSafe(R.id.actionEpisodesFragmentToRating, bundle)
   }
 

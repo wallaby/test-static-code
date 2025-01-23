@@ -25,6 +25,8 @@ interface EpisodesLocalDataSource {
     episodeTraktId: Long,
   ): Episode?
 
+  suspend fun getAll(episodesIds: List<Long>): List<Episode>
+
   suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 
   suspend fun getAllByShowId(showTraktId: Long): List<Episode>

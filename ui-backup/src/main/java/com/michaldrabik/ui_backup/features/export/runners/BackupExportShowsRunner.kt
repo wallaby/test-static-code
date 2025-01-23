@@ -6,9 +6,13 @@ import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.shows.ratings.ShowsRatingsRepository
 import com.michaldrabik.ui_backup.model.BackupEpisode
+import com.michaldrabik.ui_backup.model.BackupEpisodeRating
 import com.michaldrabik.ui_backup.model.BackupSeason
+import com.michaldrabik.ui_backup.model.BackupSeasonRating
 import com.michaldrabik.ui_backup.model.BackupShow
+import com.michaldrabik.ui_backup.model.BackupShowRating
 import com.michaldrabik.ui_backup.model.BackupShows
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -20,6 +24,7 @@ internal class BackupExportShowsRunner @Inject constructor(
   private val localSource: LocalDataSource,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val ratingsRepository: ShowsRatingsRepository,
 ) : BackupExportRunner<BackupShows>() {
 
   override suspend fun run(): BackupShows {
@@ -36,6 +41,10 @@ internal class BackupExportShowsRunner @Inject constructor(
       val backupShowsProgress = exportShowsProgress()
       val backupEpisodesProgress = exportEpisodesProgress()
 
+      val backupShowsRatings = exportShowsRatings()
+      val backupSeasonsRatings = exportSeasonsRatings()
+      val backupEpisodesRatings = exportEpisodesRatings()
+
       BackupShows(
         collectionHistory = backupShowsCollection.collectionHistory,
         collectionWatchlist = backupShowsCollection.collectionWatchlist,
@@ -44,6 +53,9 @@ internal class BackupExportShowsRunner @Inject constructor(
         progressEpisodes = backupEpisodesProgress.progressEpisodes,
         progressPinned = backupShowsProgress.progressPinned,
         progressOnHold = backupShowsProgress.progressOnHold,
+        ratingsShows = backupShowsRatings.ratingsShows,
+        ratingsSeasons = backupSeasonsRatings.ratingsSeasons,
+        ratingsEpisodes = backupEpisodesRatings.ratingsEpisodes,
       )
     }
 
@@ -100,10 +112,14 @@ internal class BackupExportShowsRunner @Inject constructor(
       val watchedEpisodes = watchedEpisodesAsync.await()
       val watchedSeasons = watchedSeasonsAsync.await()
 
+      val seasonsIds = watchedSeasons.map { it.idShowTrakt }.distinct()
+      val shows = localSource.shows.getAllTmdbIds(traktIds = seasonsIds)
+
       val progressSeasons = watchedSeasons.map { season ->
         BackupSeason(
           traktId = season.idTrakt,
           showTraktId = season.idShowTrakt,
+          showTmdbId = shows.getOrDefault(season.idShowTrakt, -1),
           seasonNumber = season.seasonNumber,
         )
       }
@@ -112,6 +128,7 @@ internal class BackupExportShowsRunner @Inject constructor(
         BackupEpisode(
           traktId = episode.idTrakt,
           showTraktId = episode.idShowTrakt,
+          showTmdbId = episode.idShowTmdb,
           episodeNumber = episode.episodeNumber,
           seasonNumber = episode.seasonNumber,
           addedAt = episode.lastWatchedAt?.let { dateIsoStringFromMillis(it.toMillis()) },
@@ -131,6 +148,81 @@ internal class BackupExportShowsRunner @Inject constructor(
       BackupShows(
         progressPinned = pinnedIds,
         progressOnHold = onHoldIds,
+      )
+    }
+
+  // Ratings
+
+  private suspend fun exportShowsRatings(): BackupShows =
+    withContext(dispatchers.IO) {
+      val ratings = ratingsRepository.loadShowsRatings()
+
+      val showsIds = ratings.map { it.idTrakt.id }
+      val showsTmdbIds = localSource.shows.getAllTmdbIds(traktIds = showsIds)
+
+      val showsRatings = ratings.map {
+        BackupShowRating(
+          traktId = it.idTrakt.id,
+          tmdbId = showsTmdbIds.getOrDefault(it.idTrakt.id, -1),
+          rating = it.rating,
+          ratedAt = dateIsoStringFromMillis(it.ratedAt.toMillis()),
+        )
+      }
+
+      BackupShows(
+        ratingsShows = showsRatings,
+      )
+    }
+
+  private suspend fun exportSeasonsRatings(): BackupShows =
+    withContext(dispatchers.IO) {
+      val ratings = ratingsRepository.loadSeasonsRatings()
+      val seasons = localSource.seasons.getAll(ratings.map { it.idTrakt })
+
+      val showsIds = seasons.map { it.idShowTrakt }.distinct()
+      val showsTmdbIds = localSource.shows.getAllTmdbIds(traktIds = showsIds)
+
+      val seasonsRatings = ratings.map { rating ->
+        val season = seasons.find { it.idTrakt == rating.idTrakt }
+        val showTraktId = season?.idShowTrakt ?: -1
+        val showTmdbId = showsTmdbIds.getOrDefault(showTraktId, -1)
+
+        BackupSeasonRating(
+          traktId = rating.idTrakt,
+          showTraktId = showTraktId,
+          showTmdbId = showTmdbId,
+          seasonNumber = rating.seasonNumber ?: -1,
+          rating = rating.rating,
+          ratedAt = dateIsoStringFromMillis(rating.ratedAt.toMillis()),
+        )
+      }
+
+      BackupShows(
+        ratingsSeasons = seasonsRatings,
+      )
+    }
+
+  private suspend fun exportEpisodesRatings(): BackupShows =
+    withContext(dispatchers.IO) {
+      val ratings = ratingsRepository.loadEpisodesRatings()
+      val episodes = localSource.episodes.getAll(ratings.map { it.idTrakt })
+
+      val episodesRatings = ratings.map { rating ->
+        val episode = episodes.find { it.idTrakt == rating.idTrakt }
+
+        BackupEpisodeRating(
+          traktId = rating.idTrakt,
+          showTraktId = episode?.idShowTrakt ?: -1,
+          showTmdbId = episode?.idShowTmdb ?: -1,
+          seasonNumber = rating.seasonNumber ?: -1,
+          episodeNumber = rating.episodeNumber ?: -1,
+          rating = rating.rating,
+          ratedAt = dateIsoStringFromMillis(rating.ratedAt.toMillis()),
+        )
+      }
+
+      BackupShows(
+        ratingsEpisodes = episodesRatings,
       )
     }
 }

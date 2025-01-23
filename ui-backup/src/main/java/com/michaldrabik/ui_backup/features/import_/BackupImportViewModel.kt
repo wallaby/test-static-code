@@ -2,10 +2,14 @@ package com.michaldrabik.ui_backup.features.import_
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.ui_backup.BackupConfig.SCHEME_VERSION
 import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Idle
 import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Initializing
 import com.michaldrabik.ui_backup.features.import_.workers.BackupImportWorker
+import com.michaldrabik.ui_backup.migrations.BackupMigrationV1
 import com.michaldrabik.ui_backup.model.BackupScheme
+import com.michaldrabik.ui_backup.model.v1.BackupScheme1
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.squareup.moshi.Moshi
@@ -67,15 +71,27 @@ class BackupImportViewModel @Inject constructor(
       .add(KotlinJsonAdapterFactory())
       .build()
 
-    val jsonAdapter = moshi.adapter(BackupScheme::class.java)
+    try {
+      val version = jsonInput
+        .substringAfter("version\":")
+        .substringBefore(",")
+        .trim()
+        .toInt()
 
-    return try {
-      jsonAdapter.fromJson(jsonInput)
+      if (version < SCHEME_VERSION) {
+        val jsonAdapter = moshi.adapter(BackupScheme1::class.java)
+        val migrationScheme = jsonAdapter.fromJson(jsonInput)!!
+        return BackupMigrationV1.migrate(migrationScheme)
+      }
+
+      val jsonAdapter = moshi.adapter(BackupScheme::class.java)
+      return jsonAdapter.fromJson(jsonInput)
     } catch (error: Throwable) {
       rethrowCancellation(error) {
         errorState.update { Error("Invalid Showly backup file.\n${error.localizedMessage}") }
+        Logger.record(error, "BackupImportViewModel::createImportData()")
       }
-      null
+      return null
     }
   }
 

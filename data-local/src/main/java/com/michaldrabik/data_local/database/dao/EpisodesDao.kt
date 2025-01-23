@@ -37,6 +37,9 @@ interface EpisodesDao : EpisodesLocalDataSource {
     episodeTraktId: Long,
   ): Boolean
 
+  @Query("SELECT * FROM episodes WHERE id_trakt IN(:episodesIds)")
+  override suspend fun getAll(episodesIds: List<Long>): List<Episode>
+
   @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
   override suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 

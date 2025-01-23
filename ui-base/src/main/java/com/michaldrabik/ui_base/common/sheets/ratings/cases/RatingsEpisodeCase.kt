@@ -39,11 +39,17 @@ class RatingsEpisodeCase @Inject constructor(
   suspend fun saveRating(
     idTrakt: IdTrakt,
     rating: Int,
+    seasonNumber: Int,
+    episodeNumber: Int,
   ) = withContext(dispatchers.IO) {
     check(rating in RATING_VALID_RANGE)
     userTraktManager.checkAuthorization()
 
-    val episode = Episode.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
+    val episode = Episode.EMPTY.copy(
+      ids = Ids.EMPTY.copy(trakt = idTrakt),
+      season = seasonNumber,
+      number = episodeNumber,
+    )
     try {
       ratingsRepository.shows.addRating(episode, rating)
     } catch (error: Throwable) {

@@ -4,6 +4,8 @@ import com.michaldrabik.data_local.database.model.Season
 
 interface SeasonsLocalDataSource {
 
+  suspend fun getAll(traktIds: List<Long>): List<Season>
+
   suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season>
 
   suspend fun getAllByShowsIdsChunk(traktIds: List<Long>): List<Season>

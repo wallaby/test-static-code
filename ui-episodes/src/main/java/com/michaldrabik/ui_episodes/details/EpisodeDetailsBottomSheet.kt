@@ -165,7 +165,12 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
       viewModel.loadRatings(options.episode)
       setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(NavigationArgs.ACTION_RATING_CHANGED to true))
     }
-    val bundle = RatingsBottomSheet.createBundle(options.episode.ids.trakt, Type.EPISODE)
+    val bundle = RatingsBottomSheet.createBundle(
+      id = options.episode.ids.trakt,
+      type = Type.EPISODE,
+      seasonNumber = options.episode.season,
+      episodeNumber = options.episode.number,
+    )
     navigateTo(R.id.actionEpisodeDetailsDialogToRate, bundle)
   }
 

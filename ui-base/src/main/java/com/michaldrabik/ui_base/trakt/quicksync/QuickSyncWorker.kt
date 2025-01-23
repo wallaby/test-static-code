@@ -121,14 +121,12 @@ class QuickSyncWorker @AssistedInject constructor(
     }
     applicationContext.notificationManager().notify(
       SYNC_NOTIFICATION_ERROR_ID,
-      createErrorNotification(R.string.textTraktQuickSyncError, notificationMessage),
+      createErrorNotification(R.string.textTraktQuickSyncError, notificationMessage, null),
     )
     Logger.record(error, "QuickSyncWorker::handleError()")
   }
 
   private fun handleListsError() {
-    val theme = settingsRepository.theme
-
     val snoozedAt = syncPreferences.getLong(CUSTOM_LIST_NOTIFICATION_SNOOZED_AT, 0)
     if (snoozedAt > 0 && nowUtcMillis() - snoozedAt < 30.days.inWholeMilliseconds) {
       Timber.d("Custom lists limit notification snoozed")
@@ -147,7 +145,6 @@ class QuickSyncWorker @AssistedInject constructor(
     notificationManager().notify(
       SYNC_NOTIFICATION_COMPLETE_ERROR_LISTS_ID,
       createErrorNotification(
-        theme = theme,
         titleTextRes = R.string.textTraktSync,
         bigTextRes = R.string.errorTraktSyncListsLimitsReached,
         actions = listOf(action, action2),

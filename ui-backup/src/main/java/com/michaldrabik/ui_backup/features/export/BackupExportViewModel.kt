@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_backup.features.export.workers.BackupExportWorker
 import com.michaldrabik.ui_backup.model.BackupScheme
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
 import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.squareup.moshi.Moshi
@@ -39,6 +40,7 @@ class BackupExportViewModel @Inject constructor(
       } catch (error: Throwable) {
         rethrowCancellation(error) {
           errorState.update { error }
+          Logger.record(error, "BackupExportViewModel::runExport()")
         }
       } finally {
         loadingState.update { false }
@@ -81,6 +83,7 @@ class BackupExportViewModel @Inject constructor(
     } catch (error: Throwable) {
       rethrowCancellation(error) {
         errorState.update { jsonError }
+        Logger.record(error, "BackupExportViewModel::validateExportData()")
       }
       return Result.failure(jsonError)
     }

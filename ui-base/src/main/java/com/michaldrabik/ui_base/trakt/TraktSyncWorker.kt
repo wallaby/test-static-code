@@ -282,7 +282,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
       notificationManager().notify(
         SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
-        createErrorNotification(R.string.textTraktSyncError, message),
+        createErrorNotification(R.string.textTraktSyncError, message, null),
       )
     }
     Logger.record(error, "TraktSyncWorker::handleError()")
@@ -323,8 +323,6 @@ class TraktSyncWorker @AssistedInject constructor(
   private fun handleWatchlistError(error: Throwable) {
     when (ErrorHelper.parse(error)) {
       ShowlyError.AccountLimitsError -> {
-        val theme = settingsRepository.theme
-
         val snoozedAt = syncPreferences.getLong(WATCHLIST_NOTIFICATION_SNOOZED_AT, 0)
         if (snoozedAt > 0 && nowUtcMillis() - snoozedAt < 30.days.inWholeMilliseconds) {
           Timber.d("Watchlist limit notification snoozed")
@@ -343,7 +341,6 @@ class TraktSyncWorker @AssistedInject constructor(
         notificationManager().notify(
           SYNC_NOTIFICATION_COMPLETE_ERROR_WATCHLIST_ID,
           createErrorNotification(
-            theme = theme,
             titleTextRes = R.string.textTraktSync,
             bigTextRes = R.string.errorTraktSyncWatchlistLimitsReached,
             actions = listOf(action, action2),
