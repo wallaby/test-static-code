@@ -174,9 +174,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         if (imagePadded) {
           movieDetailsMainLayout
             .updatePadding(top = inset.top)
-        } else {
-          (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
-            .updateMargins(top = inset.top)
         }
         movieDetailsMainContent.updatePadding(bottom = inset.bottom + dimenToPx(R.dimen.spaceNormal))
         (movieDetailsBackArrow.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = inset.top)
@@ -191,12 +188,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           renderTitleDescription(movie, translation, followedState, spoilers)
           renderExtraInfo(movie, meta)
           movieDetailsStatus.text = getString(movie.status.displayName)
-          movieDetailsShareButton.run {
-            isEnabled = movie.ids.imdb.id
-              .isNotBlank()
-            alpha = if (isEnabled) 1.0F else 0.35F
-            onClick { openShareSheet(movie) }
-          }
           movieDetailsActions.trailerChip.run {
             isEnabled = movie.trailer.isNotBlank()
             alpha = if (isEnabled) 1.0F else 0.35F
@@ -213,6 +204,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsActions.commentsChip.onClick {
             val bundle = CommentsFragment.createBundle(movie)
             navigateToSafe(R.id.actionMovieDetailsFragmentToComments, bundle)
+          }
+          movieDetailsActions.shareChip.run {
+            isEnabled = movie.ids.imdb.id
+              .isNotBlank()
+            alpha = if (isEnabled) 1.0F else 0.35F
+            onClick { openShareSheet(movie) }
           }
           movieDetailsAddButton.isEnabled = true
         }
@@ -423,9 +420,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun openShareSheet(movie: Movie) {
     val intent = Intent().apply {
-      val text = "Hey! Check out ${movie.title}:\n" +
-        "https://trakt.tv/movies/${movie.ids.slug.id}\n" +
-        "https://www.imdb.com/title/${movie.ids.imdb.id}"
+      val text = "${movie.title}:" +
+        "\n" +
+        "https://www.imdb.com/title/${movie.ids.imdb.id}" +
+        "\n" +
+        "https://trakt.tv/movies/${movie.ids.slug.id}"
       action = Intent.ACTION_SEND
       putExtra(Intent.EXTRA_TEXT, text)
       type = "text/plain"

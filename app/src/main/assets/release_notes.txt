@@ -1,2 +1,3 @@
-* Added new backup and restore feature
-* Added filter chips in the settings screen for easier navigation
+* Added small UI improvements and new material icons for smoother look
+* Moved share button to other action buttons in details screen
+* Bugfixes and performance improvements
