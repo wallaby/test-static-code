@@ -1,5 +1,8 @@
 package com.michaldrabik.ui_backup.features.export.workers
 
+import com.michaldrabik.common.extensions.dateIsoStringFromMillis
+import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.ui_backup.BackupConfig.SCHEME_PLATFORM
 import com.michaldrabik.ui_backup.BackupConfig.SCHEME_VERSION
 import com.michaldrabik.ui_backup.features.export.runners.BackupExportListsRunner
 import com.michaldrabik.ui_backup.features.export.runners.BackupExportMoviesRunner
@@ -22,6 +25,8 @@ internal class DefaultBackupExportWorker @Inject constructor(
 
     return BackupScheme(
       version = SCHEME_VERSION,
+      platform = SCHEME_PLATFORM,
+      createdAt = dateIsoStringFromMillis(nowUtcMillis()),
       shows = exportShows,
       movies = exportMovies,
       lists = exportLists,

@@ -1,5 +1,8 @@
 package com.michaldrabik.ui_backup.migrations
 
+import com.michaldrabik.common.extensions.dateIsoStringFromMillis
+import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.ui_backup.BackupConfig.SCHEME_PLATFORM
 import com.michaldrabik.ui_backup.BackupConfig.SCHEME_VERSION
 import com.michaldrabik.ui_backup.model.BackupEpisode
 import com.michaldrabik.ui_backup.model.BackupList
@@ -18,6 +21,8 @@ internal object BackupMigrationV1 {
   fun migrate(scheme: BackupScheme1): BackupScheme =
     BackupScheme(
       version = SCHEME_VERSION,
+      platform = SCHEME_PLATFORM,
+      createdAt = dateIsoStringFromMillis(nowUtcMillis()),
       shows = BackupShows(
         collectionHistory = scheme.shows.collectionHistory.map {
           BackupShow(

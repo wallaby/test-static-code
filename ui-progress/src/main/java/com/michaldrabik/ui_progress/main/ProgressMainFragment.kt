@@ -21,9 +21,7 @@ import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottom
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.REQUEST_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Companion.RESULT_DATE_SELECTION
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet.Result
-import com.michaldrabik.ui_base.common.sheets.ratings.RatingsBottomSheet
 import com.michaldrabik.ui_base.utilities.events.Event
-import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -47,7 +45,6 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
@@ -56,7 +53,6 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.databinding.FragmentProgressMainBinding
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.time.ZonedDateTime
 
 @AndroidEntryPoint
@@ -287,27 +283,6 @@ class ProgressMainFragment :
       }
     }
     viewModel.onEpisodeDetails(show, episode)
-  }
-
-  fun openRateDialog(
-    episodeBundle: EpisodeBundle,
-    customDate: ZonedDateTime? = null,
-  ) {
-    setFragmentResultListener(NavigationArgs.REQUEST_RATING) { _, bundle ->
-      when (bundle.optionalParcelable<Operation>(NavigationArgs.RESULT)) {
-        Operation.SAVE -> showSnack(MessageEvent.Info(R.string.textRateSaved))
-        Operation.REMOVE -> showSnack(MessageEvent.Info(R.string.textRateRemoved))
-        else -> Timber.w("Unknown result")
-      }
-      viewModel.setWatchedEpisode(episodeBundle, customDate)
-    }
-    val bundle = RatingsBottomSheet.createBundle(
-      id = episodeBundle.episode.ids.trakt,
-      type = Type.EPISODE,
-      seasonNumber = episodeBundle.episode.season,
-      episodeNumber = episodeBundle.episode.number,
-    )
-    navigateToSafe(R.id.actionProgressFragmentToRating, bundle)
   }
 
   fun openDateSelectionDialog(episodeBundle: EpisodeBundle) {
