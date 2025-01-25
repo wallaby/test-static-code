@@ -339,13 +339,14 @@
     android:id="@+id/movieDetailsBackArrow"
     android:layout_width="@dimen/backArrowSize"
     android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="6dp"
     >
 
     <ImageView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="center"
-      android:padding="10dp"
+      android:padding="8dp"
       app:srcCompat="@drawable/ic_circle"
       app:tint="@color/colorBlackTranslucentMedium"
       />
