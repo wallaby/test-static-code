@@ -42,14 +42,18 @@ class RatingsSeasonCase @Inject constructor(
     seasonNumber: Int,
   ) = withContext(dispatchers.IO) {
     check(rating in RATING_VALID_RANGE)
-    userTraktManager.checkAuthorization()
 
     val season = Season.EMPTY.copy(
       ids = Ids.EMPTY.copy(trakt = idTrakt),
       number = seasonNumber,
     )
+
     try {
-      ratingsRepository.shows.addRating(season, rating)
+      ratingsRepository.shows.addRating(
+        season = season,
+        rating = rating,
+        withSync = userTraktManager.isAuthorized(),
+      )
     } catch (error: Throwable) {
       handleError(error)
     }
@@ -57,11 +61,12 @@ class RatingsSeasonCase @Inject constructor(
 
   suspend fun deleteRating(idTrakt: IdTrakt) =
     withContext(dispatchers.IO) {
-      userTraktManager.checkAuthorization()
-
       val season = Season.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = idTrakt))
       try {
-        ratingsRepository.shows.deleteRating(season)
+        ratingsRepository.shows.deleteRating(
+          season = season,
+          withSync = userTraktManager.isAuthorized(),
+        )
       } catch (error: Throwable) {
         handleError(error)
       }

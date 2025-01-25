@@ -9,6 +9,7 @@ import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.ArchiveShow
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.MyShow
+import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.database.model.WatchlistShow
 import com.michaldrabik.data_local.utilities.TransactionsProvider
@@ -18,6 +19,7 @@ import com.michaldrabik.repository.OnHoldItemsRepository
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
+import com.michaldrabik.repository.shows.ratings.ShowsRatingsRepository
 import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
 import com.michaldrabik.ui_backup.model.BackupShows
 import com.michaldrabik.ui_model.IdTrakt
@@ -34,6 +36,7 @@ internal class BackupImportShowsRunner @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val onHoldItemsRepository: OnHoldItemsRepository,
+  private val ratingsRepository: ShowsRatingsRepository,
   private val episodesManager: EpisodesManager,
   private val mappers: Mappers,
   private val transactions: TransactionsProvider,
@@ -50,8 +53,13 @@ internal class BackupImportShowsRunner @Inject constructor(
   private suspend fun runImport(backup: BackupShows) {
     withContext(dispatchers.IO) {
       importShowsCollection(backup)
+
       importShowsPinned(backup)
       importShowsOnHold(backup)
+
+      importShowsRatings(backup)
+      importSeasonsRatings(backup)
+      importEpisodesRatings(backup)
     }
   }
 
@@ -181,6 +189,81 @@ internal class BackupImportShowsRunner @Inject constructor(
         if (!localOnHold.contains(onHoldShow)) {
           onHoldItemsRepository.addItem(IdTrakt(onHoldShow))
         }
+      }
+    }
+  }
+
+  private suspend fun importShowsRatings(backup: BackupShows) {
+    withContext(dispatchers.IO) {
+      val localRatings = ratingsRepository.loadShowsRatings()
+
+      for (rating in backup.ratingsShows) {
+        if (localRatings.any { it.idTrakt.id == rating.traktId }) {
+          continue
+        }
+
+        val entity = Rating(
+          idTrakt = rating.traktId,
+          type = "show",
+          rating = rating.rating,
+          seasonNumber = null,
+          episodeNumber = null,
+          ratedAt = rating.ratedAt.toUtcDateTime() ?: nowUtc(),
+          createdAt = nowUtc(),
+          updatedAt = nowUtc(),
+        )
+
+        localSource.ratings.replace(entity)
+      }
+    }
+  }
+
+  private suspend fun importSeasonsRatings(backup: BackupShows) {
+    withContext(dispatchers.IO) {
+      val localRatings = ratingsRepository.loadSeasonsRatings()
+
+      for (rating in backup.ratingsSeasons) {
+        if (localRatings.any { it.idTrakt == rating.traktId }) {
+          continue
+        }
+
+        val entity = Rating(
+          idTrakt = rating.traktId,
+          type = "season",
+          rating = rating.rating,
+          seasonNumber = null,
+          episodeNumber = null,
+          ratedAt = rating.ratedAt.toUtcDateTime() ?: nowUtc(),
+          createdAt = nowUtc(),
+          updatedAt = nowUtc(),
+        )
+
+        localSource.ratings.replace(entity)
+      }
+    }
+  }
+
+  private suspend fun importEpisodesRatings(backup: BackupShows) {
+    withContext(dispatchers.IO) {
+      val localRatings = ratingsRepository.loadEpisodesRatings()
+
+      for (rating in backup.ratingsEpisodes) {
+        if (localRatings.any { it.idTrakt == rating.traktId }) {
+          continue
+        }
+
+        val entity = Rating(
+          idTrakt = rating.traktId,
+          type = "episode",
+          rating = rating.rating,
+          seasonNumber = null,
+          episodeNumber = null,
+          ratedAt = rating.ratedAt.toUtcDateTime() ?: nowUtc(),
+          createdAt = nowUtc(),
+          updatedAt = nowUtc(),
+        )
+
+        localSource.ratings.replace(entity)
       }
     }
   }

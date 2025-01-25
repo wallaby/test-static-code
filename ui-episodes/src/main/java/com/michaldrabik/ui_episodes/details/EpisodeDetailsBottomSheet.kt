@@ -250,13 +250,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_episode_
           episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
           episodeDetailsRateButton.visibleIf(state.rateLoading == false, gone = false)
           episodeDetailsRateButton.isEnabled = state.rateLoading == false
-          episodeDetailsRateButton.onClick {
-            if (state.rateAllowed == true) {
-              openRateDialog()
-            } else {
-              renderSnackbar(MessageEvent.Info(R.string.textSignBefore))
-            }
-          }
+          episodeDetailsRateButton.onClick { openRateDialog() }
           if (state.hasRating()) {
             episodeDetailsRateButton.text = "${state.userRating?.rating} / 10"
           } else {

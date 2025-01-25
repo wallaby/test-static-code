@@ -335,11 +335,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
 
       onClick {
-        if (rating.rateAllowed == true) {
-          openRateDialog()
-        } else {
-          showSnack(MessageEvent.Info(R.string.textSignBefore))
-        }
+        openRateDialog()
       }
     }
   }

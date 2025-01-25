@@ -107,7 +107,7 @@ class MovieDetailsViewModel @Inject constructor(
         movieState.value = movie
         movieLoadingState.value = false
         followedState.value = isFollowed
-        ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+        ratingState.value = RatingState(rateLoading = false)
         spoilersState.value = settingsRepository.spoilers.getAll()
         metaState.value = MovieDetailsMeta(
           dateFormat = dateFormatProvider.loadShortDayFormat(),
@@ -176,20 +176,14 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun loadUserRating() {
-    if (!userManager.isAuthorized()) {
-      return
-    }
     viewModelScope.launch {
       try {
-        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
+        ratingState.value = RatingState(rateLoading = true)
         val rating = ratingsCase.loadRating(movie)
-        ratingState.value = RatingState(
-          rateLoading = false,
-          rateAllowed = true,
-          userRating = rating ?: TraktRating.EMPTY,
-        )
+        ratingState.value =
+          RatingState(rateLoading = false, userRating = rating ?: TraktRating.EMPTY)
       } catch (error: Throwable) {
-        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
+        ratingState.value = RatingState(rateLoading = false)
         rethrowCancellation(error)
       }
     }

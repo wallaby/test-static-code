@@ -23,8 +23,11 @@ interface RatingsDao :
     type: String,
   ): List<Rating>
 
-  @Query("DELETE FROM ratings WHERE type == :type")
-  override suspend fun deleteAllByType(type: String)
+  @Query("DELETE FROM ratings WHERE type == :type AND id_trakt IN (:ids)")
+  suspend fun deleteAllByType(
+    type: String,
+    ids: Set<Long>,
+  )
 
   @Query("DELETE FROM ratings WHERE id_trakt == :traktId AND type == :type")
   override suspend fun deleteByType(
@@ -37,7 +40,7 @@ interface RatingsDao :
     ratings: List<Rating>,
     type: String,
   ) {
-    deleteAllByType(type)
+    deleteAllByType(type, ratings.map { it.idTrakt }.toSet())
     insert(ratings)
   }
 

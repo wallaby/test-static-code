@@ -1,15 +1,18 @@
 package com.michaldrabik.ui_backup.features.import_.runners
 
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.MyMovie
+import com.michaldrabik.data_local.database.model.Rating
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.movies.ratings.MoviesRatingsRepository
 import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
 import com.michaldrabik.ui_backup.model.BackupMovies
 import com.michaldrabik.ui_model.IdTrakt
@@ -21,6 +24,7 @@ internal class BackupImportMoviesRunner @Inject constructor(
   private val dispatchers: CoroutineDispatchers,
   private val localSource: LocalDataSource,
   private val moviesRepository: MoviesRepository,
+  private val ratingsRepository: MoviesRatingsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
 ) : BackupImportRunner<BackupMovies>() {
 
@@ -36,6 +40,7 @@ internal class BackupImportMoviesRunner @Inject constructor(
     withContext(dispatchers.IO) {
       importMoviesCollection(backup)
       importMoviesPinned(backup)
+      importMoviesRatings(backup)
     }
   }
 
@@ -46,6 +51,31 @@ internal class BackupImportMoviesRunner @Inject constructor(
         if (!localPinned.contains(pinned)) {
           pinnedItemsRepository.addMoviePinnedItem(IdTrakt(pinned))
         }
+      }
+    }
+  }
+
+  private suspend fun importMoviesRatings(backup: BackupMovies) {
+    withContext(dispatchers.IO) {
+      val localRatings = ratingsRepository.loadMoviesRatings()
+
+      for (rating in backup.ratingsMovies) {
+        if (localRatings.any { it.idTrakt.id == rating.traktId }) {
+          continue
+        }
+
+        val entity = Rating(
+          idTrakt = rating.traktId,
+          type = "movie",
+          rating = rating.rating,
+          seasonNumber = null,
+          episodeNumber = null,
+          ratedAt = rating.ratedAt.toUtcDateTime() ?: nowUtc(),
+          createdAt = nowUtc(),
+          updatedAt = nowUtc(),
+        )
+
+        localSource.ratings.replace(entity)
       }
     }
   }

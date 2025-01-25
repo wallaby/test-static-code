@@ -34,9 +34,11 @@ import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.trakt.exports.TraktExportListsRunner
+import com.michaldrabik.ui_base.trakt.exports.TraktExportRatingsRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchedRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportListsRunner
+import com.michaldrabik.ui_base.trakt.imports.TraktImportRatingsRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.receivers.ListLimitNotificationReceiver
@@ -59,9 +61,11 @@ class TraktSyncWorker @AssistedInject constructor(
   private val importWatchedRunner: TraktImportWatchedRunner,
   private val importWatchlistRunner: TraktImportWatchlistRunner,
   private val importListsRunner: TraktImportListsRunner,
+  private val importRatingsRunner: TraktImportRatingsRunner,
   private val exportWatchedRunner: TraktExportWatchedRunner,
   private val exportWatchlistRunner: TraktExportWatchlistRunner,
   private val exportListsRunner: TraktExportListsRunner,
+  private val exportRatingsRunner: TraktExportRatingsRunner,
   private val eventsManager: EventsManager,
   private val userManager: UserTraktManager,
   @Named("syncPreferences") private val syncPreferences: SharedPreferences,
@@ -170,11 +174,13 @@ class TraktSyncWorker @AssistedInject constructor(
         runImportWatched()
         runImportWatchlist()
         runImportLists()
+        runImportRatings()
       }
       if (isExport) {
         runExportWatched()
         runExportWatchlist()
         runExportLists()
+        runExportRatings()
       }
 
       miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
@@ -225,6 +231,15 @@ class TraktSyncWorker @AssistedInject constructor(
     importListsRunner.run()
   }
 
+  private suspend fun runImportRatings() {
+    val theme = settingsRepository.theme
+    importRatingsRunner.progressListener = {
+      setProgressNotification(theme, "Importing ratings...")
+      eventsManager.sendEvent(TraktSyncProgress("Importing ratings..."))
+    }
+    importRatingsRunner.run()
+  }
+
   private suspend fun runExportWatched() {
     val status = "Exporting progress..."
     setProgressNotification(status)
@@ -249,6 +264,18 @@ class TraktSyncWorker @AssistedInject constructor(
     eventsManager.sendEvent(TraktSyncProgress(status))
     try {
       exportListsRunner.run()
+    } catch (error: Throwable) {
+      handleListsError(error)
+    }
+  }
+
+  private suspend fun runExportRatings() {
+    val status = "Exporting ratings..."
+    val theme = settingsRepository.theme
+    setProgressNotification(theme, status)
+    eventsManager.sendEvent(TraktSyncProgress(status))
+    try {
+      exportRatingsRunner.run()
     } catch (error: Throwable) {
       handleListsError(error)
     }
@@ -355,12 +382,13 @@ class TraktSyncWorker @AssistedInject constructor(
   private fun clearRunners() {
     arrayOf(
       importWatchedRunner,
-      importWatchedRunner,
       importWatchlistRunner,
       importListsRunner,
+      importRatingsRunner,
       exportWatchedRunner,
       exportWatchlistRunner,
       exportListsRunner,
+      exportRatingsRunner,
     ).forEach {
       it.progressListener = null
     }

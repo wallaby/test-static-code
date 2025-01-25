@@ -200,11 +200,11 @@ class ShowDetailsEpisodesFragment :
       }
 
       val ratingState = season.userRating
-      episodesSeasonRateButton.visibleIf(ratingState.rateAllowed == true && ratingState.userRating == null)
+      episodesSeasonRateButton.visibleIf(ratingState.userRating == null)
       episodesSeasonMyStarIcon.visibleIf(ratingState.userRating != null)
       episodesSeasonMyRating.visibleIf(ratingState.userRating != null)
       ratingState.userRating?.let {
-        episodesSeasonMyStarIcon.isEnabled = ratingState.rateAllowed == true
+        episodesSeasonMyStarIcon.isEnabled = true
         episodesSeasonMyRating.text = String.format(Locale.ENGLISH, "%d", it.rating)
       }
     }
