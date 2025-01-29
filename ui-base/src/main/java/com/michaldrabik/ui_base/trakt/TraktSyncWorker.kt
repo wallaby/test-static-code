@@ -232,9 +232,8 @@ class TraktSyncWorker @AssistedInject constructor(
   }
 
   private suspend fun runImportRatings() {
-    val theme = settingsRepository.theme
     importRatingsRunner.progressListener = {
-      setProgressNotification(theme, "Importing ratings...")
+      setProgressNotification("Importing ratings...")
       eventsManager.sendEvent(TraktSyncProgress("Importing ratings..."))
     }
     importRatingsRunner.run()
@@ -271,8 +270,7 @@ class TraktSyncWorker @AssistedInject constructor(
 
   private suspend fun runExportRatings() {
     val status = "Exporting ratings..."
-    val theme = settingsRepository.theme
-    setProgressNotification(theme, status)
+    setProgressNotification(status)
     eventsManager.sendEvent(TraktSyncProgress(status))
     try {
       exportRatingsRunner.run()
