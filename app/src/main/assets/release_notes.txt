@@ -1,4 +1,1 @@
-* Added small UI improvements and new material icons for smoother look
-* Moved share button to other action buttons in details screen
-* Reworked ratings now do not require to be logged in with Trakt
-* Bugfixes and performance improvements
+* Updated Trakt token refresh logic to handle latest changes
