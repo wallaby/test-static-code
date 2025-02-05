@@ -35,7 +35,7 @@ class UserTraktManager @Inject constructor(
       accessToken = tokens.access_token,
       refreshToken = tokens.refresh_token,
       expiresIn = tokens.expires_in,
-      createdAt = tokens.created_at
+      createdAt = tokens.created_at,
     )
     val user = authorizedRemoteSource.fetchMyProfile()
     saveUser(user)

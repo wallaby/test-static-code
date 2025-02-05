@@ -27,7 +27,7 @@ class TraktRefreshTokenInterceptor @Inject constructor(
             accessToken = refreshedTokens.access_token,
             refreshToken = refreshedTokens.refresh_token,
             expiresIn = refreshedTokens.expires_in,
-            createdAt = refreshedTokens.created_at
+            createdAt = refreshedTokens.created_at,
           )
         } catch (error: Throwable) {
           if (error !is CancellationException && error.message != "Canceled") {
