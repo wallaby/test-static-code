@@ -55,6 +55,7 @@ internal class TraktTokenProvider(
   ) {
     val createdAtMillis = createdAt.seconds.inWholeMilliseconds
     val expiresAtMillis = createdAtMillis + expiresIn.seconds.inWholeMilliseconds
+
     sharedPreferences
       .edit()
       .putString(KEY_ACCESS_TOKEN, accessToken)
@@ -62,6 +63,7 @@ internal class TraktTokenProvider(
       .putLong(KEY_TOKEN_CREATED_AT, createdAtMillis)
       .putLong(KEY_TOKEN_EXPIRES_AT, expiresAtMillis)
       .commit()
+
     token = null
   }
 
@@ -74,6 +76,7 @@ internal class TraktTokenProvider(
       .remove(KEY_TOKEN_CREATED_AT)
       .remove(KEY_TOKEN_EXPIRES_AT)
       .commit()
+
     token = null
   }
 
