@@ -11,13 +11,13 @@ interface RatingsDao :
   BaseDao<Rating>,
   RatingsLocalDataSource {
 
-  @Query("SELECT * FROM ratings")
+  @Query("SELECT * FROM ratings ORDER BY rated_at DESC")
   override suspend fun getAll(): List<Rating>
 
-  @Query("SELECT * FROM ratings WHERE type == :type")
+  @Query("SELECT * FROM ratings WHERE type == :type ORDER BY rated_at DESC")
   override suspend fun getAllByType(type: String): List<Rating>
 
-  @Query("SELECT * FROM ratings WHERE id_trakt IN (:idsTrakt) AND type == :type")
+  @Query("SELECT * FROM ratings WHERE id_trakt IN (:idsTrakt) AND type == :type ORDER BY rated_at DESC")
   override suspend fun getAllByType(
     idsTrakt: List<Long>,
     type: String,

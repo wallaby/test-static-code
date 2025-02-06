@@ -29,7 +29,6 @@
       android:layout_height="wrap_content"
       android:background="?android:windowBackground"
       android:elevation="@dimen/elevationNormal"
-      app:contentInsetStartWithNavigation="0dp"
       app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
