@@ -98,6 +98,8 @@ internal class BackupImportMoviesRunner @Inject constructor(
   ) {
     for (movie in backupMovies.collectionHistory) {
       Timber.d("Importing movie ${movie.traktId} ...")
+      statusListener?.invoke(Importing(movie.title))
+
       if (localCollection.contains(movie.traktId)) {
         Timber.d("Movie already in collection. Skipping.")
         continue
