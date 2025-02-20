@@ -5,10 +5,6 @@
 
 [![Twitter](https://img.shields.io/twitter/follow/AppShowly?style=social)](https://twitter.com/AppShowly)
 
-<a href="https://www.buymeacoffee.com/showly" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-
-If you use and enjoy Showly OSS, consider buying me a coffee as a support for my work. Thanks!
-
 # Showly available on iOS 🍎
 
 I am happy to announce that starting Jan 2025, Showly is available on iOS!
