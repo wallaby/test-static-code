@@ -14,9 +14,12 @@ import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.movies.ratings.MoviesRatingsRepository
 import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
+import com.michaldrabik.ui_backup.model.BackupMovie
 import com.michaldrabik.ui_backup.model.BackupMovies
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -107,7 +110,9 @@ internal class BackupImportMoviesRunner @Inject constructor(
 
       val movieDetails = localSource.movies.getById(movie.traktId)
       if (movieDetails == null) {
-        fetchMovieDetails(IdTrakt(movie.traktId))
+        if (!fetchMovieDetails(movie)) {
+          continue
+        }
       }
 
       val timestamp = movie.addedAt.toUtcDateTime()?.toMillis() ?: nowUtcMillis()
@@ -133,7 +138,9 @@ internal class BackupImportMoviesRunner @Inject constructor(
 
       val movieDetails = localSource.movies.getById(movie.traktId)
       if (movieDetails == null) {
-        fetchMovieDetails(IdTrakt(movie.traktId))
+        if (!fetchMovieDetails(movie)) {
+          continue
+        }
       }
 
       val timestamp = movie.addedAt.toUtcDateTime()?.toMillis() ?: nowUtcMillis()
@@ -159,7 +166,9 @@ internal class BackupImportMoviesRunner @Inject constructor(
 
       val movieDetails = localSource.movies.getById(movie.traktId)
       if (movieDetails == null) {
-        fetchMovieDetails(IdTrakt(movie.traktId))
+        if (!fetchMovieDetails(movie)) {
+          continue
+        }
       }
 
       val timestamp = movie.addedAt.toUtcDateTime()?.toMillis() ?: nowUtcMillis()
@@ -170,14 +179,18 @@ internal class BackupImportMoviesRunner @Inject constructor(
     }
   }
 
-  private suspend fun fetchMovieDetails(movieTraktId: IdTrakt) {
-    Timber.d("Fetching remote movie details for $movieTraktId ...")
-    moviesRepository.movieDetails.load(IdTrakt(movieTraktId.id), force = true)
-//    try {
-//    } catch (error: Throwable) {
-//      rethrowCancellation(error) {
-//        // TODO Handle Error
-//      }
-//    }
+  private suspend fun fetchMovieDetails(movie: BackupMovie): Boolean {
+    Timber.d("Fetching remote movie details for ${movie.traktId} ...")
+    return try {
+      moviesRepository.movieDetails.load(IdTrakt(movie.traktId), force = true)
+      true
+    } catch (error: Throwable) {
+      rethrowCancellation(error) {
+        if (error is HttpException && error.code() == 404) {
+          Timber.w("Failed to fetch movie: ${movie.traktId} ${movie.title}")
+        }
+      }
+      false
+    }
   }
 }

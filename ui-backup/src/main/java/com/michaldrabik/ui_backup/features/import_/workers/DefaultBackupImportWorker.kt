@@ -5,8 +5,6 @@ import com.michaldrabik.ui_backup.features.import_.runners.BackupImportListsRunn
 import com.michaldrabik.ui_backup.features.import_.runners.BackupImportMoviesRunner
 import com.michaldrabik.ui_backup.features.import_.runners.BackupImportShowsRunner
 import com.michaldrabik.ui_backup.model.BackupScheme
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,10 +26,8 @@ internal class DefaultBackupImportWorker @Inject constructor(
 
   override suspend fun run(backup: BackupScheme) {
     coroutineScope {
-      val importShowsAsync = async { importShowsRunner.run(backup.shows) }
-      val importMoviesAsync = async { importMoviesRunner.run(backup.movies) }
-
-      awaitAll(importShowsAsync, importMoviesAsync)
+      importShowsRunner.run(backup.shows)
+      importMoviesRunner.run(backup.movies)
       importListsRunner.run(backup.lists)
     }
   }

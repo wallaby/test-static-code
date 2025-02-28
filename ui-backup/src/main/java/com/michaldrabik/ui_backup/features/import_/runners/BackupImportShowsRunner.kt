@@ -21,11 +21,14 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.repository.shows.ratings.ShowsRatingsRepository
 import com.michaldrabik.ui_backup.features.import_.model.BackupImportStatus.Importing
+import com.michaldrabik.ui_backup.model.BackupShow
 import com.michaldrabik.ui_backup.model.BackupShows
+import com.michaldrabik.ui_base.utilities.extensions.rethrowCancellation
 import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -94,7 +97,9 @@ internal class BackupImportShowsRunner @Inject constructor(
 
       val showDetails = localSource.shows.getById(show.traktId)
       if (showDetails == null) {
-        fetchShowDetails(IdTrakt(show.traktId))
+        if (!fetchShowDetails(show)) {
+          continue
+        }
       }
 
       val addedAt = show.addedAt.toUtcDateTime()?.toMillis() ?: nowUtcMillis()
@@ -134,7 +139,9 @@ internal class BackupImportShowsRunner @Inject constructor(
 
       val showDetails = localSource.shows.getById(show.traktId)
       if (showDetails == null) {
-        fetchShowDetails(IdTrakt(show.traktId))
+        if (!fetchShowDetails(show)) {
+          continue
+        }
       }
 
       val timestamp = show.addedAt.toUtcDateTime()?.toMillis() ?: nowUtcMillis()
@@ -160,7 +167,9 @@ internal class BackupImportShowsRunner @Inject constructor(
 
       val showDetails = localSource.shows.getById(show.traktId)
       if (showDetails == null) {
-        fetchShowDetails(IdTrakt(show.traktId))
+        if (!fetchShowDetails(show)) {
+          continue
+        }
       }
 
       val timestamp = show.addedAt.toUtcDateTime()?.toMillis() ?: nowUtcMillis()
@@ -365,15 +374,18 @@ internal class BackupImportShowsRunner @Inject constructor(
       Pair(seasons, episodes)
     }
 
-  private suspend fun fetchShowDetails(showId: IdTrakt) {
-    Timber.d("Fetching remote show details for $showId ...")
-    showsRepository.detailsShow.load(IdTrakt(showId.id), force = true)
-//    try {
-//      showsRepository.detailsShow.load(IdTrakt(showId.id), force = true)
-//    } catch (error: Throwable) {
-//      rethrowCancellation(error) {
-//        // TODO Handle Error
-//      }
-//    }
+  private suspend fun fetchShowDetails(show: BackupShow): Boolean {
+    Timber.d("Fetching remote show details for ${show.traktId} ...")
+    return try {
+      showsRepository.detailsShow.load(IdTrakt(show.traktId), force = true)
+      true
+    } catch (error: Throwable) {
+      rethrowCancellation(error) {
+        if (error is HttpException && error.code() == 404) {
+          Timber.w("Failed to fetch show: ${show.traktId} ${show.title}")
+        }
+      }
+      false
+    }
   }
 }
