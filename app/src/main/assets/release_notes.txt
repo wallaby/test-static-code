@@ -1,2 +1,2 @@
-* Updated Trakt token refresh logic to handle latest changes
-* Fixed bug where ratings would not be updated properly in statistics screen
+* Updated SDK for Android 15 compatibility
+* Bugfixes and minor UI improvements
