@@ -1,2 +1,3 @@
 * Updated SDK for Android 15 compatibility
+* Updated backup import to skip shows/movies that no longer exist in the Trakt/TMDB database
 * Bugfixes and minor UI improvements
