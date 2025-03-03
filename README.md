@@ -96,11 +96,11 @@ Translations status for 20 Jan 2025:
 
 iOS:
 
-![image](https://github.com/user-attachments/assets/81a460ca-344e-4dd1-8df6-319945dd5d36)
+![image](https://github.com/user-attachments/assets/e09f6a03-6c90-43fa-8f91-f17de80e1d84)
 
 Android:
 
-![image](https://github.com/user-attachments/assets/32c7177d-9e5c-4252-a01b-4b40bc707da3)
+![image](https://github.com/user-attachments/assets/24736105-a9be-49ef-864e-b4f2624671f6)
 
 ## FAQ
 
