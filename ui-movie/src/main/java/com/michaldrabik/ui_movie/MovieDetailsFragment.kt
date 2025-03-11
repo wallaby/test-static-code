@@ -26,6 +26,7 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.SPOILERS_HIDE_SYMBOL
 import com.michaldrabik.common.Config.SPOILERS_REGEX
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.date_selection.DateSelectionBottomSheet
@@ -225,6 +226,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
           }
           movieDetailsHideLabel.visibleIf(!it.isHidden)
+          movieDetailsWatchedBadge.visibleIf(it.isMyMovie && it.watchedAt != null)
+          it.watchedAt?.let { date ->
+            movieDetailsWatchedBadge.text = uiState.meta?.watchedAtDateFormat?.format(date.toLocalZone())
+          }
         }
         image?.let { renderImage(it) }
         listsCount?.let {
