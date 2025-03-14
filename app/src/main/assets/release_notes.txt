@@ -1,3 +1,2 @@
-* Updated SDK for Android 15 compatibility
-* Updated backup import to skip shows/movies that no longer exist in the Trakt/TMDB database
-* Bugfixes and minor UI improvements
+- Added the ability to see the date when a movie was watched in its details screen.
+- Updated language translations
