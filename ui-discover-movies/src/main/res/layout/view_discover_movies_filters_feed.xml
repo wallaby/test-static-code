@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceSmall"
         android:layout_marginBottom="@dimen/spaceMicro"
+        app:chipSpacingVertical="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feedTitle"
@@ -56,12 +57,12 @@
         >
 
         <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipHot"
+          android:id="@+id/feedChipTrending"
           style="@style/Widget.Material3.Chip.Suggestion"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:checked="true"
-          android:text="@string/textHot"
+          android:text="@string/textFeedTrending"
           android:textColor="@color/selector_discover_chip_text"
           app:checkedIconTint="@color/selector_discover_chip_text"
           app:chipBackgroundColor="@color/selector_discover_chip_background"
@@ -71,25 +72,39 @@
           />
 
         <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipTopRated"
-          style="@style/Widget.Material3.Chip.Suggestion"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/textSortRated"
-          android:textColor="@color/selector_discover_chip_text"
-          app:checkedIconTint="@color/selector_discover_chip_text"
-          app:chipBackgroundColor="@color/selector_discover_chip_background"
-          app:chipCornerRadius="100dp"
-          app:chipStrokeColor="@color/selector_discover_chip_text"
-          app:chipStrokeWidth="1dp"
-          />
-
-        <com.google.android.material.chip.Chip
-          android:id="@+id/feedChipRecent"
+          android:id="@+id/feedChipNewest"
           style="@style/Widget.Material3.Chip.Suggestion"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/textSortNewest"
+          android:textColor="@color/selector_discover_chip_text"
+          app:checkedIconTint="@color/selector_discover_chip_text"
+          app:chipBackgroundColor="@color/selector_discover_chip_background"
+          app:chipCornerRadius="100dp"
+          app:chipStrokeColor="@color/selector_discover_chip_text"
+          app:chipStrokeWidth="1dp"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/feedChipPopular"
+          style="@style/Widget.Material3.Chip.Suggestion"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/textFeedPopular"
+          android:textColor="@color/selector_discover_chip_text"
+          app:checkedIconTint="@color/selector_discover_chip_text"
+          app:chipBackgroundColor="@color/selector_discover_chip_background"
+          app:chipCornerRadius="100dp"
+          app:chipStrokeColor="@color/selector_discover_chip_text"
+          app:chipStrokeWidth="1dp"
+          />
+
+        <com.google.android.material.chip.Chip
+          android:id="@+id/feedChipAnticipated"
+          style="@style/Widget.Material3.Chip.Suggestion"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/textFeedAnticipated"
           android:textColor="@color/selector_discover_chip_text"
           app:checkedIconTint="@color/selector_discover_chip_text"
           app:chipBackgroundColor="@color/selector_discover_chip_background"

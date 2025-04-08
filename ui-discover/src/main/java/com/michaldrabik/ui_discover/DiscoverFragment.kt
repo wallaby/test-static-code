@@ -101,7 +101,7 @@ internal class DiscoverFragment :
     )
 
     setFragmentResultListener(REQUEST_DISCOVER_FILTERS) { _, _ ->
-      viewModel.loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
+      viewModel.loadShows(resetScroll = true, skipCache = true, instantProgress = true)
     }
   }
 
@@ -149,7 +149,6 @@ internal class DiscoverFragment :
         onGenresChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersGenres) }
         onNetworksChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersNetworks) }
         onFeedChipClick = { navigateToSafe(R.id.actionDiscoverFragmentToFiltersFeed) }
-        onHideAnticipatedChipClick = { viewModel.toggleAnticipated() }
         onHideCollectionChipClick = { viewModel.toggleCollection() }
       }
     }

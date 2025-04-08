@@ -23,21 +23,12 @@ class DiscoverFiltersCase @Inject constructor(
     withContext(dispatchers.IO) {
       val settings = settingsRepository.load()
       DiscoverFilters(
-        feedOrder = settings.discoverMoviesFilterFeed,
+        feedOrder = settingsRepository.filters.discoverMoviesFeed,
         hideAnticipated = !settings.showAnticipatedMovies,
         hideCollection = !settings.showCollectionMovies,
         genres = settings.discoverMoviesFilterGenres.toList(),
       )
     }
-
-  suspend fun toggleAnticipated() {
-    withContext(dispatchers.IO) {
-      val settings = settingsRepository.load()
-      settingsRepository.update(
-        settings.copy(showAnticipatedMovies = !settings.showAnticipatedMovies),
-      )
-    }
-  }
 
   suspend fun toggleCollection() {
     withContext(dispatchers.IO) {
@@ -57,9 +48,9 @@ class DiscoverFiltersCase @Inject constructor(
         if (initialFilters != currentFilters) {
           initialFilters?.let { initial ->
             val settings = settingsRepository.load()
+            settingsRepository.filters.discoverMoviesFeed = initial.feedOrder
             settingsRepository.update(
               settings.copy(
-                discoverMoviesFilterFeed = initial.feedOrder,
                 discoverMoviesFilterGenres = initial.genres,
                 showAnticipatedMovies = !initial.hideAnticipated,
                 showCollectionMovies = !initial.hideCollection,

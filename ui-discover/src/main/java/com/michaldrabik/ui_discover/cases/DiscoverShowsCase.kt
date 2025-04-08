@@ -3,18 +3,18 @@ package com.michaldrabik.ui_discover.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
+import com.michaldrabik.common.extensions.isSameDayOrAfter
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toUtcDateTime
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.ShowImagesProvider
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_discover.helpers.itemtype.ImageTypeProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.DiscoverFeed
 import com.michaldrabik.ui_model.DiscoverFilters
-import com.michaldrabik.ui_model.DiscoverSortOrder
-import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
-import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
@@ -58,7 +58,6 @@ internal class DiscoverShowsCase @Inject constructor(
 
   suspend fun loadRemoteShows(filters: DiscoverFilters) =
     withContext(dispatchers.IO) {
-      val showAnticipated = !filters.hideAnticipated
       val showCollection = !filters.hideCollection
       val genres = filters.genres.toList()
       val networks = filters.networks.toList()
@@ -70,11 +69,11 @@ internal class DiscoverShowsCase @Inject constructor(
       val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
       val remoteShows = showsRepository.discoverShows.loadAllRemote(
-        showAnticipated,
-        showCollection,
-        collectionSize,
-        genres,
-        networks,
+        order = filters.feedOrder,
+        showCollection = showCollection,
+        collectionSize = collectionSize,
+        genres = genres,
+        networks = networks,
       )
 
       showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
@@ -93,19 +92,19 @@ internal class DiscoverShowsCase @Inject constructor(
     myShowsIds: List<Long>,
     watchlistShowsIds: List<Long>,
     hiddenShowsIds: List<Long>,
-    filters: DiscoverFilters?,
+    filters: DiscoverFilters,
   ) = coroutineScope {
     val language = translationsRepository.getLanguage()
     val collectionIds = myShowsIds + watchlistShowsIds + hiddenShowsIds
     shows
       .filter { it.traktId !in hiddenShowsIds }
       .filter {
-        if (filters?.hideCollection == false) {
+        if (!filters.hideCollection) {
           true
         } else {
           it.traktId !in collectionIds
         }
-      }.sortedBy(filters?.feedOrder ?: HOT)
+      }.sortedBy(filters.feedOrder)
       .mapIndexed { index, show ->
         async {
           val itemType = imageTypeProvider.getImageType(index)
@@ -148,10 +147,16 @@ internal class DiscoverShowsCase @Inject constructor(
     translationsRepository.loadTranslation(show, language, true)
   }
 
-  private fun List<Show>.sortedBy(order: DiscoverSortOrder) =
-    when (order) {
-      HOT -> this
-      RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
-      NEWEST -> this.sortedByDescending { it.year }
+  private fun List<Show>.sortedBy(order: DiscoverFeed): List<Show> {
+    val nowUtc = nowUtc()
+    return when (order) {
+      DiscoverFeed.RECENT ->
+        this
+          .filter {
+            it.firstAired.isNotBlank() &&
+              nowUtc.isSameDayOrAfter(it.firstAired.toUtcDateTime() ?: return@filter false)
+          }.sortedWith(compareByDescending { it.firstAired })
+      else -> this
     }
+  }
 }

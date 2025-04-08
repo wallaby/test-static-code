@@ -1,10 +1,13 @@
 package com.michaldrabik.repository.mappers
 
+import com.michaldrabik.ui_model.DiscoverFeed
+import com.michaldrabik.ui_model.DiscoverFeed.TRENDING
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Network
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import javax.inject.Inject
+import kotlin.enums.enumEntries
 import com.michaldrabik.data_local.database.model.Settings as SettingsDb
 
 class SettingsMapper @Inject constructor() {
@@ -25,7 +28,8 @@ class SettingsMapper @Inject constructor() {
       watchlistShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy),
       archiveShowsSortBy = enumValueOf(settings.archiveShowsSortBy),
       showAnticipatedShows = settings.showAnticipatedShows,
-      discoverFilterFeed = enumValueOf(settings.discoverFilterFeed),
+      discoverFilterFeed = enumEntries<DiscoverFeed>()
+        .find { settings.discoverFilterFeed == it.name } ?: TRENDING,
       discoverFilterGenres = settings.discoverFilterGenres
         .split(
           ",",
@@ -48,7 +52,8 @@ class SettingsMapper @Inject constructor() {
         .filter {
           it.isNotBlank()
         }.map { Genre.valueOf(it) },
-      discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed),
+      discoverMoviesFilterFeed = enumEntries<DiscoverFeed>()
+        .find { settings.discoverFilterFeed == it.name } ?: TRENDING,
       myMoviesAllSortBy = enumValueOf(settings.myMoviesAllSortBy),
       watchlistMoviesSortBy = enumValueOf(settings.seeLaterMoviesSortBy),
       progressMoviesSortBy = enumValueOf(settings.progressMoviesSortBy),

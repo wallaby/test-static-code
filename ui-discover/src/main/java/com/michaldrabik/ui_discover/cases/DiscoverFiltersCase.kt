@@ -23,7 +23,7 @@ class DiscoverFiltersCase @Inject constructor(
     withContext(dispatchers.IO) {
       val settings = settingsRepository.load()
       DiscoverFilters(
-        feedOrder = settings.discoverFilterFeed,
+        feedOrder = settingsRepository.filters.discoverShowsFeed,
         hideAnticipated = !settings.showAnticipatedShows,
         hideCollection = !settings.showCollectionShows,
         genres = settings.discoverFilterGenres.toList(),
@@ -40,9 +40,9 @@ class DiscoverFiltersCase @Inject constructor(
         if (initialFilters != currentFilters) {
           initialFilters?.let { initial ->
             val settings = settingsRepository.load()
+            settingsRepository.filters.discoverShowsFeed = initial.feedOrder
             settingsRepository.update(
               settings.copy(
-                discoverFilterFeed = initial.feedOrder,
                 discoverFilterGenres = initial.genres,
                 discoverFilterNetworks = initial.networks,
                 showAnticipatedShows = !initial.hideAnticipated,
@@ -54,15 +54,6 @@ class DiscoverFiltersCase @Inject constructor(
       } catch (error: Throwable) {
         rethrowCancellation(error)
       }
-    }
-  }
-
-  suspend fun toggleAnticipated() {
-    withContext(dispatchers.IO) {
-      val settings = settingsRepository.load()
-      settingsRepository.update(
-        settings.copy(showAnticipatedShows = !settings.showAnticipatedShows),
-      )
     }
   }
 

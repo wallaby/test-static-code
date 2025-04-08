@@ -18,10 +18,11 @@ import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersFeedBinding
 import com.michaldrabik.ui_discover.filters.feed.DiscoverFiltersFeedUiEvent.ApplyFilters
 import com.michaldrabik.ui_discover.filters.feed.DiscoverFiltersFeedUiEvent.CloseFilters
-import com.michaldrabik.ui_model.DiscoverSortOrder
-import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
-import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
+import com.michaldrabik.ui_model.DiscoverFeed
+import com.michaldrabik.ui_model.DiscoverFeed.ANTICIPATED
+import com.michaldrabik.ui_model.DiscoverFeed.POPULAR
+import com.michaldrabik.ui_model.DiscoverFeed.RECENT
+import com.michaldrabik.ui_model.DiscoverFeed.TRENDING
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,9 +60,10 @@ internal class DiscoverFiltersFeedBottomSheet : BaseBottomSheetFragment(R.layout
   private fun saveFeedOrder() {
     with(binding) {
       val feedOrder = when {
-        feedChipHot.isChecked -> HOT
-        feedChipTopRated.isChecked -> RATING
-        feedChipRecent.isChecked -> NEWEST
+        feedChipHot.isChecked -> TRENDING
+        feedChipTopRated.isChecked -> POPULAR
+        feedChipRecent.isChecked -> ANTICIPATED
+        feedChipNewest.isChecked -> RECENT
         else -> throw IllegalStateException()
       }
       viewModel.saveFeedOrder(feedOrder)
@@ -74,11 +76,12 @@ internal class DiscoverFiltersFeedBottomSheet : BaseBottomSheetFragment(R.layout
     }
   }
 
-  private fun renderFilters(feedOrder: DiscoverSortOrder) {
+  private fun renderFilters(feedOrder: DiscoverFeed) {
     with(binding) {
-      feedChipHot.isChecked = feedOrder == HOT
-      feedChipTopRated.isChecked = feedOrder == RATING
-      feedChipRecent.isChecked = feedOrder == NEWEST
+      feedChipHot.isChecked = feedOrder == TRENDING
+      feedChipTopRated.isChecked = feedOrder == POPULAR
+      feedChipRecent.isChecked = feedOrder == ANTICIPATED
+      feedChipNewest.isChecked = feedOrder == RECENT
     }
   }
 

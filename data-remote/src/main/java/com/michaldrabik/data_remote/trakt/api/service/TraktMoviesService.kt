@@ -1,6 +1,5 @@
 package com.michaldrabik.data_remote.trakt.api.service
 
-import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.trakt.model.Comment
 import com.michaldrabik.data_remote.trakt.model.Movie
 import com.michaldrabik.data_remote.trakt.model.MovieCollection
@@ -23,9 +22,10 @@ interface TraktMoviesService {
     @Path("traktSlug") traktSlug: String,
   ): Movie
 
-  @GET("movies/popular?extended=full&limit=${Config.TRAKT_POPULAR_MOVIES_LIMIT}")
+  @GET("movies/popular?extended=full")
   suspend fun fetchPopularMovies(
     @Query("genres") genres: String,
+    @Query("limit") limit: Int,
   ): List<Movie>
 
   @GET("movies/trending?extended=full")
@@ -34,9 +34,10 @@ interface TraktMoviesService {
     @Query("limit") limit: Int,
   ): List<MovieResult>
 
-  @GET("movies/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_MOVIES_LIMIT}")
+  @GET("movies/anticipated?extended=full")
   suspend fun fetchAnticipatedMovies(
     @Query("genres") genres: String,
+    @Query("limit") limit: Int,
   ): List<MovieResult>
 
   @GET("movies/{traktId}/related?extended=full")

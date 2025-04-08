@@ -23,7 +23,7 @@ import com.michaldrabik.ui_discover.cases.DiscoverTwitterCase
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageFamily.MOVIE
+import com.michaldrabik.ui_model.ImageFamily.SHOW
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
@@ -66,7 +66,7 @@ internal class DiscoverViewModel @Inject constructor(
 
   fun loadShows(
     pullToRefresh: Boolean = false,
-    scrollToTop: Boolean = false,
+    resetScroll: Boolean = false,
     skipCache: Boolean = false,
     instantProgress: Boolean = false,
   ) {
@@ -92,13 +92,15 @@ internal class DiscoverViewModel @Inject constructor(
         if (!pullToRefresh && !skipCache) {
           val shows = showsCase.loadCachedShows(filters)
           itemsState.value = shows
-          scrollState.value = Event(scrollToTop)
+          scrollState.value = Event(resetScroll)
         }
 
         if (pullToRefresh || skipCache || !showsCase.isCacheValid()) {
           val shows = showsCase.loadRemoteShows(filters)
+          itemsState.value = emptyList()
+          delay(50) // Added to avoid long scrolling to top
           itemsState.value = shows
-          scrollState.value = Event(scrollToTop)
+          scrollState.value = Event(resetScroll)
           initialFilters = filters
         }
 
@@ -136,7 +138,7 @@ internal class DiscoverViewModel @Inject constructor(
         val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, SHOW)))
         rethrowCancellation(t)
       } finally {
         loadingJob.cancel()
@@ -149,17 +151,10 @@ internal class DiscoverViewModel @Inject constructor(
     loadShows()
   }
 
-  fun toggleAnticipated() {
-    viewModelScope.launch {
-      filtersCase.toggleAnticipated()
-      loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
-    }
-  }
-
   fun toggleCollection() {
     viewModelScope.launch {
       filtersCase.toggleCollection()
-      loadShows(scrollToTop = true, skipCache = true, instantProgress = true)
+      loadShows(resetScroll = true, skipCache = true, instantProgress = true)
     }
   }
 

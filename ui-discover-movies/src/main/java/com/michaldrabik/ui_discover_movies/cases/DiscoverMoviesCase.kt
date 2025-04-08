@@ -2,16 +2,14 @@ package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.dispatchers.CoroutineDispatchers
+import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.images.MovieImagesProvider
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_discover_movies.helpers.itemtype.ImageTypeProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
+import com.michaldrabik.ui_model.DiscoverFeed
 import com.michaldrabik.ui_model.DiscoverFilters
-import com.michaldrabik.ui_model.DiscoverSortOrder
-import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
-import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
@@ -56,7 +54,6 @@ internal class DiscoverMoviesCase @Inject constructor(
 
   suspend fun loadRemoteMovies(filters: DiscoverFilters) =
     withContext(dispatchers.IO) {
-      val showAnticipated = !filters.hideAnticipated
       val showCollection = !filters.hideCollection
       val genres = filters.genres.toList()
 
@@ -67,7 +64,7 @@ internal class DiscoverMoviesCase @Inject constructor(
       val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
       val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(
-        showAnticipated,
+        filters.feedOrder,
         showCollection,
         collectionSize,
         genres,
@@ -83,19 +80,19 @@ internal class DiscoverMoviesCase @Inject constructor(
     myMoviesIds: List<Long>,
     watchlistMoviesIds: List<Long>,
     hiddenMoviesIds: List<Long>,
-    filters: DiscoverFilters?,
+    filters: DiscoverFilters,
     language: String,
   ) = coroutineScope {
     val collectionIds = myMoviesIds + watchlistMoviesIds
     movies
       .filter { !hiddenMoviesIds.contains(it.traktId) }
       .filter {
-        if (filters?.hideCollection == false) {
+        if (!filters.hideCollection) {
           true
         } else {
           !collectionIds.contains(it.traktId)
         }
-      }.sortedBy(filters?.feedOrder ?: HOT)
+      }.sortedBy(filters.feedOrder)
       .mapIndexed { index, movie ->
         async {
           val itemType = imageTypeProvider.getImageType(index)
@@ -123,10 +120,15 @@ internal class DiscoverMoviesCase @Inject constructor(
     translationsRepository.loadTranslation(movie, language, true)
   }
 
-  private fun List<Movie>.sortedBy(order: DiscoverSortOrder) =
-    when (order) {
-      HOT -> this
-      RATING -> this.sortedWith(compareByDescending<Movie> { it.votes }.thenBy { it.rating })
-      NEWEST -> this.sortedWith(compareByDescending<Movie> { it.year }.thenByDescending { it.released })
+  private fun List<Movie>.sortedBy(order: DiscoverFeed): List<Movie> {
+    val nowUtcDay = nowUtcDay()
+    return when (order) {
+      DiscoverFeed.RECENT ->
+        this
+          .filter {
+            it.released != null && (it.released!!.isBefore(nowUtcDay) || it.released!!.isEqual(nowUtcDay))
+          }.sortedWith(compareByDescending { it.released })
+      else -> this
     }
+  }
 }

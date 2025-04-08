@@ -36,6 +36,7 @@ interface TraktRemoteDataSource {
   suspend fun fetchPopularShows(
     genres: String,
     networks: String,
+    limit: Int,
   ): List<Show>
 
   suspend fun fetchTrendingShows(
@@ -47,6 +48,7 @@ interface TraktRemoteDataSource {
   suspend fun fetchAnticipatedShows(
     genres: String,
     networks: String,
+    limit: Int,
   ): List<Show>
 
   suspend fun fetchRelatedShows(
@@ -86,14 +88,20 @@ interface TraktRemoteDataSource {
 
   suspend fun fetchMovie(traktSlug: String): Movie
 
-  suspend fun fetchPopularMovies(genres: String): List<Movie>
+  suspend fun fetchPopularMovies(
+    genres: String,
+    limit: Int,
+  ): List<Movie>
 
   suspend fun fetchTrendingMovies(
     genres: String,
     limit: Int,
   ): List<Movie>
 
-  suspend fun fetchAnticipatedMovies(genres: String): List<Movie>
+  suspend fun fetchAnticipatedMovies(
+    genres: String,
+    limit: Int,
+  ): List<Movie>
 
   suspend fun fetchRelatedMovies(
     traktId: Long,

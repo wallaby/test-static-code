@@ -12,14 +12,10 @@ object Config {
     "https://trakt.tv/oauth/authorize?response_type=code&client_id=$TRAKT_CLIENT_ID&redirect_uri=$TRAKT_REDIRECT_URL"
   val TRAKT_TOKEN_REFRESH_DURATION: Duration = Duration.ofHours(12)
 
-  const val TRAKT_POPULAR_SHOWS_LIMIT = 100
-  const val TRAKT_POPULAR_MOVIES_LIMIT = 50
-  const val TRAKT_TRENDING_SHOWS_LIMIT = 298
-  const val TRAKT_TRENDING_MOVIES_LIMIT = 252
-  const val TRAKT_ANTICIPATED_SHOWS_LIMIT = 40
-  const val TRAKT_ANTICIPATED_MOVIES_LIMIT = 30
-  const val TRAKT_RELATED_SHOWS_LIMIT = 20
-  const val TRAKT_RELATED_MOVIES_LIMIT = 20
+  const val TRAKT_DISCOVER_LIMIT = 280
+  const val TRAKT_ANTICIPATED_LIMIT = 30
+  const val TRAKT_RELATED_SHOWS_LIMIT = 30
+  const val TRAKT_RELATED_MOVIES_LIMIT = 30
   const val TRAKT_SEARCH_LIMIT = 50
 
   const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"

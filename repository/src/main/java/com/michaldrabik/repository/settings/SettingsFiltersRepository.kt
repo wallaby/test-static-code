@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.michaldrabik.repository.utilities.BooleanPreference
 import com.michaldrabik.repository.utilities.EnumPreference
+import com.michaldrabik.ui_model.DiscoverFeed
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.HistoryPeriod
 import com.michaldrabik.ui_model.MyShowsSection
@@ -36,6 +37,9 @@ class SettingsFiltersRepository @Inject constructor(
     private const val WATCHLIST_MOVIES_UPCOMING = "WATCHLIST_MOVIES_UPCOMING_2"
     private const val WATCHLIST_MOVIES_GENRES = "WATCHLIST_MOVIES_GENRES"
     private const val HIDDEN_MOVIES_GENRES = "HIDDEN_MOVIES_GENRES"
+
+    private const val DISCOVER_SHOWS_FEED = "DISCOVER_SHOWS_FEED"
+    private const val DISCOVER_MOVIES_FEED = "DISCOVER_MOVIES_FEED"
   }
 
   // Shows
@@ -52,6 +56,7 @@ class SettingsFiltersRepository @Inject constructor(
   )
 
   var myShowsType by EnumPreference(preferences, MY_SHOWS_TYPE, MyShowsSection.ALL, MyShowsSection::class.java)
+
   var myShowsNetworks: List<Network>
     get() {
       val filters = preferences.getStringSet(MY_SHOWS_NETWORKS, emptySet()) ?: emptySet()
@@ -60,6 +65,7 @@ class SettingsFiltersRepository @Inject constructor(
     set(value) {
       preferences.edit { putStringSet(MY_SHOWS_NETWORKS, value.map { it.name }.toSet()) }
     }
+
   var myShowsGenres: List<Genre>
     get() {
       val filters = preferences.getStringSet(MY_SHOWS_GENRES, emptySet()) ?: emptySet()
@@ -75,6 +81,7 @@ class SettingsFiltersRepository @Inject constructor(
     UpcomingFilter.OFF,
     UpcomingFilter::class.java,
   )
+
   var watchlistShowsNetworks: List<Network>
     get() {
       val filters = preferences.getStringSet(WATCHLIST_SHOWS_NETWORKS, emptySet()) ?: emptySet()
@@ -83,6 +90,7 @@ class SettingsFiltersRepository @Inject constructor(
     set(value) {
       preferences.edit { putStringSet(WATCHLIST_SHOWS_NETWORKS, value.map { it.name }.toSet()) }
     }
+
   var watchlistShowsGenres: List<Genre>
     get() {
       val filters = preferences.getStringSet(WATCHLIST_SHOWS_GENRES, emptySet()) ?: emptySet()
@@ -100,6 +108,7 @@ class SettingsFiltersRepository @Inject constructor(
     set(value) {
       preferences.edit { putStringSet(HIDDEN_SHOWS_NETWORKS, value.map { it.name }.toSet()) }
     }
+
   var hiddenShowsGenres: List<Genre>
     get() {
       val filters = preferences.getStringSet(HIDDEN_SHOWS_GENRES, emptySet()) ?: emptySet()
@@ -108,6 +117,13 @@ class SettingsFiltersRepository @Inject constructor(
     set(value) {
       preferences.edit { putStringSet(HIDDEN_SHOWS_GENRES, value.map { it.name }.toSet()) }
     }
+
+  var discoverShowsFeed: DiscoverFeed
+    get() {
+      val default = DiscoverFeed.TRENDING.name
+      return DiscoverFeed.valueOf(preferences.getString(DISCOVER_SHOWS_FEED, default) ?: default)
+    }
+    set(value) = preferences.edit { putString(DISCOVER_SHOWS_FEED, value.name) }
 
   // Movies
 
@@ -143,4 +159,11 @@ class SettingsFiltersRepository @Inject constructor(
     set(value) {
       preferences.edit { putStringSet(HIDDEN_MOVIES_GENRES, value.map { it.name }.toSet()) }
     }
+
+  var discoverMoviesFeed: DiscoverFeed
+    get() {
+      val default = DiscoverFeed.TRENDING.name
+      return DiscoverFeed.valueOf(preferences.getString(DISCOVER_MOVIES_FEED, default) ?: default)
+    }
+    set(value) = preferences.edit { putString(DISCOVER_MOVIES_FEED, value.name) }
 }

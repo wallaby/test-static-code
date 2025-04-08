@@ -8,7 +8,7 @@ import com.michaldrabik.ui_base.viewmodel.ChannelsDelegate
 import com.michaldrabik.ui_base.viewmodel.DefaultChannelsDelegate
 import com.michaldrabik.ui_discover.filters.feed.DiscoverFiltersFeedUiEvent.ApplyFilters
 import com.michaldrabik.ui_discover.filters.feed.DiscoverFiltersFeedUiEvent.CloseFilters
-import com.michaldrabik.ui_model.DiscoverSortOrder
+import com.michaldrabik.ui_model.DiscoverFeed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +23,7 @@ internal class DiscoverFiltersFeedViewModel @Inject constructor(
 ) : ViewModel(),
   ChannelsDelegate by DefaultChannelsDelegate() {
 
-  private val feedOrderState = MutableStateFlow<DiscoverSortOrder?>(null)
+  private val feedOrderState = MutableStateFlow<DiscoverFeed?>(null)
   private val loadingState = MutableStateFlow(false)
 
   init {
@@ -32,21 +32,17 @@ internal class DiscoverFiltersFeedViewModel @Inject constructor(
 
   private fun loadFilters() {
     viewModelScope.launch {
-      val settings = settingsRepository.load()
-      feedOrderState.value = settings.discoverFilterFeed
+      feedOrderState.value = settingsRepository.filters.discoverShowsFeed
     }
   }
 
-  fun saveFeedOrder(feedOrder: DiscoverSortOrder) {
+  fun saveFeedOrder(feedOrder: DiscoverFeed) {
     viewModelScope.launch {
       if (feedOrder == feedOrderState.value) {
         eventChannel.send(CloseFilters)
         return@launch
       }
-      val settings = settingsRepository.load()
-      settingsRepository.update(
-        settings.copy(discoverFilterFeed = feedOrder),
-      )
+      settingsRepository.filters.discoverShowsFeed = feedOrder
       eventChannel.send(ApplyFilters)
     }
   }

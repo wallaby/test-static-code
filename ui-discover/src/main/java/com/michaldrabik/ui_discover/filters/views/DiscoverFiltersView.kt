@@ -10,11 +10,12 @@ import androidx.core.view.children
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.databinding.ViewDiscoverFiltersBinding
+import com.michaldrabik.ui_model.DiscoverFeed
+import com.michaldrabik.ui_model.DiscoverFeed.ANTICIPATED
+import com.michaldrabik.ui_model.DiscoverFeed.POPULAR
+import com.michaldrabik.ui_model.DiscoverFeed.RECENT
+import com.michaldrabik.ui_model.DiscoverFeed.TRENDING
 import com.michaldrabik.ui_model.DiscoverFilters
-import com.michaldrabik.ui_model.DiscoverSortOrder
-import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
-import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Network
 
@@ -30,7 +31,6 @@ class DiscoverFiltersView : FrameLayout {
   var onGenresChipClick: (() -> Unit)? = null
   var onNetworksChipClick: (() -> Unit)? = null
   var onHideCollectionChipClick: (() -> Unit)? = null
-  var onHideAnticipatedChipClick: (() -> Unit)? = null
 
   private lateinit var filters: DiscoverFilters
 
@@ -41,10 +41,8 @@ class DiscoverFiltersView : FrameLayout {
       discoverGenresChip.onClick { onGenresChipClick?.invoke() }
       discoverNetworksChip.text = discoverNetworksChip.text.toString().filter { it.isLetter() }
       discoverNetworksChip.onClick { onNetworksChipClick?.invoke() }
-      discoverFeedChip.isSelected = true
       discoverFeedChip.onClick { onFeedChipClick?.invoke() }
       discoverCollectionChip.onClick { onHideCollectionChipClick?.invoke() }
-      discoverAnticipatedChip.onClick { onHideAnticipatedChipClick?.invoke() }
     }
   }
 
@@ -55,16 +53,16 @@ class DiscoverFiltersView : FrameLayout {
     bindNetworks(filters.networks)
     with(binding) {
       discoverCollectionChip.isChecked = filters.hideCollection
-      discoverAnticipatedChip.isChecked = filters.hideAnticipated
     }
   }
 
-  private fun bindFeed(feed: DiscoverSortOrder) {
+  private fun bindFeed(feed: DiscoverFeed) {
     with(binding) {
       discoverFeedChip.text = when (feed) {
-        HOT -> context.getString(R.string.textHot)
-        RATING -> context.getString(R.string.textSortRated)
-        NEWEST -> context.getString(R.string.textSortNewest)
+        TRENDING -> context.getString(R.string.textFeedTrending)
+        POPULAR -> context.getString(R.string.textFeedPopular)
+        ANTICIPATED -> context.getString(R.string.textFeedPopular)
+        RECENT -> context.getString(R.string.textSortNewest)
       }
     }
   }
@@ -76,8 +74,12 @@ class DiscoverFiltersView : FrameLayout {
         genres.isEmpty() -> context.getString(R.string.textGenres).filter { it.isLetter() }
         genres.size == 1 -> context.getString(genres.first().displayName)
         genres.size == 2 -> "${context.getString(genres[0].displayName)}, ${context.getString(genres[1].displayName)}"
-        else -> "${context.getString(genres[0].displayName)}, " +
-          "${context.getString(genres[1].displayName)} + ${genres.size - 2}"
+        else ->
+          "${
+            context.getString(
+              genres[0].displayName,
+            )
+          }, ${context.getString(genres[1].displayName)} + ${genres.size - 2}"
       }
     }
   }

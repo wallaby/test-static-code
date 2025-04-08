@@ -29,7 +29,12 @@
         android:id="@+id/discoverMoviesFeedChip"
         style="@style/ShowlyChip.Filter"
         android:checkable="false"
-        android:text="@string/textHot"
+        android:text="@string/textFeedTrending"
+        app:chipIcon="@drawable/ic_feed"
+        app:chipIconSize="16dp"
+        app:chipIconTint="@color/selector_chip_text"
+        app:chipIconVisible="true"
+        app:iconStartPadding="5dp"
         />
 
       <com.google.android.material.chip.Chip
@@ -43,13 +48,6 @@
         android:id="@+id/discoverMoviesCollectionChip"
         style="@style/ShowlyChip.Filter"
         android:text="@string/textDiscoverFilterCollectionMovies"
-        />
-
-      <com.google.android.material.chip.Chip
-        android:id="@+id/discoverMoviesAnticipatedChip"
-        style="@style/ShowlyChip.Filter"
-        android:checked="true"
-        android:text="@string/textDiscoverFilterAnticipatedMovies"
         />
 
     </com.google.android.material.chip.ChipGroup>

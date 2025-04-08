@@ -5,11 +5,19 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.LocalDataSource
 import com.michaldrabik.data_local.database.model.DiscoverMovie
 import com.michaldrabik.data_local.utilities.TransactionsProvider
-import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_MOVIES_LIMIT
+import com.michaldrabik.data_remote.Config.TRAKT_ANTICIPATED_LIMIT
+import com.michaldrabik.data_remote.Config.TRAKT_DISCOVER_LIMIT
 import com.michaldrabik.data_remote.RemoteDataSource
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_model.DiscoverFeed
+import com.michaldrabik.ui_model.DiscoverFeed.ANTICIPATED
+import com.michaldrabik.ui_model.DiscoverFeed.POPULAR
+import com.michaldrabik.ui_model.DiscoverFeed.RECENT
+import com.michaldrabik.ui_model.DiscoverFeed.TRENDING
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 class DiscoverMoviesRepository @Inject constructor(
@@ -33,57 +41,73 @@ class DiscoverMoviesRepository @Inject constructor(
       .map { mappers.movie.fromDatabase(it) }
   }
 
-  // TODO This logic should probably sit in a case and not repository.
   suspend fun loadAllRemote(
-    showAnticipated: Boolean,
+    order: DiscoverFeed,
     showCollection: Boolean,
     collectionSize: Int,
     genres: List<Genre>,
+  ): List<Movie> =
+    when (order) {
+      TRENDING, RECENT -> loadRemoteTrending(genres, showCollection, collectionSize)
+      POPULAR -> loadRemotePopular(genres)
+      ANTICIPATED -> loadRemoteAnticipated(genres)
+    }
+
+  private suspend fun loadRemoteTrending(
+    genres: List<Genre>,
+    showCollection: Boolean,
+    collectionSize: Int,
   ): List<Movie> {
-    val remoteMovies = mutableListOf<Movie>()
-    val anticipatedMovies = mutableListOf<Movie>()
-    val popularMovies = mutableListOf<Movie>()
+    return coroutineScope {
+      val resultMovies = mutableListOf<Movie>()
+      val genresQuery = genres.joinToString(",") { it.slug }
+
+      val limit =
+        if (showCollection) {
+          TRAKT_DISCOVER_LIMIT
+        } else {
+          TRAKT_DISCOVER_LIMIT + (collectionSize / 2)
+        }
+
+      val trendingMoviesAsync = async {
+        remoteSource.trakt
+          .fetchTrendingMovies(genresQuery, limit)
+          .map { mappers.movie.fromNetwork(it) }
+      }
+
+      val anticipatedMoviesAsync = async {
+        remoteSource.trakt
+          .fetchAnticipatedMovies(genresQuery, TRAKT_ANTICIPATED_LIMIT)
+          .map { mappers.movie.fromNetwork(it) }
+      }
+
+      val trendingMovies = trendingMoviesAsync.await()
+      val anticipatedMovies = anticipatedMoviesAsync.await().toMutableList()
+
+      trendingMovies.forEachIndexed { index, trendingMovie ->
+        addIfMissing(resultMovies, trendingMovie)
+        if (index != 0 && index % 6 == 0 && anticipatedMovies.isNotEmpty()) {
+          val anticipatedMovie = anticipatedMovies.removeAt(0)
+          addIfMissing(resultMovies, anticipatedMovie)
+        }
+      }
+
+      return@coroutineScope resultMovies
+    }
+  }
+
+  private suspend fun loadRemotePopular(genres: List<Genre>): List<Movie> {
     val genresQuery = genres.joinToString(",") { it.slug }
-
-    val limit =
-      if (showCollection) {
-        TRAKT_TRENDING_MOVIES_LIMIT
-      } else {
-        TRAKT_TRENDING_MOVIES_LIMIT + (collectionSize / 2)
-      }
-    val trendingMovies = remoteSource.trakt
-      .fetchTrendingMovies(genresQuery, limit)
+    return remoteSource.trakt
+      .fetchPopularMovies(genresQuery, TRAKT_DISCOVER_LIMIT)
       .map { mappers.movie.fromNetwork(it) }
+  }
 
-    if (genres.isNotEmpty()) {
-      // Wa are adding popular results for genres filtered content to add more results.
-      val popular = remoteSource.trakt.fetchPopularMovies(genresQuery).map { mappers.movie.fromNetwork(it) }
-      popularMovies.addAll(popular)
-    }
-
-    if (showAnticipated) {
-      val movies = remoteSource.trakt
-        .fetchAnticipatedMovies(genresQuery)
-        .map {
-          mappers.movie.fromNetwork(it)
-        }.toMutableList()
-      anticipatedMovies.addAll(movies)
-    }
-
-    trendingMovies.forEachIndexed { index, movie ->
-      addIfMissing(remoteMovies, movie)
-      if (index % 4 == 0 && anticipatedMovies.isNotEmpty()) {
-        val element = anticipatedMovies.removeAt(0)
-        addIfMissing(remoteMovies, element)
-      }
-    }
-    popularMovies.forEach { show -> addIfMissing(remoteMovies, show) }
-
-    if (!showAnticipated) {
-      return remoteMovies.filter { !it.status.isAnticipated() }
-    }
-
-    return remoteMovies
+  private suspend fun loadRemoteAnticipated(genres: List<Genre>): List<Movie> {
+    val genresQuery = genres.joinToString(",") { it.slug }
+    return remoteSource.trakt
+      .fetchAnticipatedMovies(genresQuery, TRAKT_DISCOVER_LIMIT)
+      .map { mappers.movie.fromNetwork(it) }
   }
 
   suspend fun cacheDiscoverMovies(movies: List<Movie>) {
@@ -106,7 +130,9 @@ class DiscoverMoviesRepository @Inject constructor(
     movies: MutableList<Movie>,
     movie: Movie,
   ) {
-    if (movies.any { it.ids.trakt == movie.ids.trakt }) return
+    if (movies.any { it.ids.trakt == movie.ids.trakt }) {
+      return
+    }
     movies.add(movie)
   }
 }
