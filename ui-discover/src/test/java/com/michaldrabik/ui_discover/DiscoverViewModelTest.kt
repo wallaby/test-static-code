@@ -119,6 +119,8 @@ class DiscoverViewModelTest : BaseMockTest() {
       coEvery { showsCase.isCacheValid() } returns false
 
       SUT.loadShows(pullToRefresh = true)
+      advanceUntilIdle()
+
       assertThat(SUT.lastPullToRefreshMs).isGreaterThan(nowUtcMillis() - TimeUnit.MINUTES.toMillis(1))
     }
 
