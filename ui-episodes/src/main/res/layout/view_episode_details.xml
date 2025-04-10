@@ -282,6 +282,15 @@
 
         </FrameLayout>
 
+        <com.google.android.material.chip.Chip
+          android:id="@+id/episodeDetailsLinksButton"
+          style="@style/ShowlyChip.Button"
+          android:layout_marginStart="@dimen/spaceSmall"
+          android:text="@string/textLink"
+          app:chipBackgroundColor="?colorSheetBackground"
+          app:chipIcon="@drawable/ic_link"
+          />
+
       </LinearLayout>
 
       <TextView
