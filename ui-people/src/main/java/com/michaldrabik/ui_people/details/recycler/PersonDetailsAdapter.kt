@@ -4,8 +4,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_model.Person
+import com.michaldrabik.ui_people.details.filters.PersonDetailsFilters
 import com.michaldrabik.ui_people.details.recycler.views.PersonDetailsBioView
 import com.michaldrabik.ui_people.details.recycler.views.PersonDetailsCreditsItemView
 import com.michaldrabik.ui_people.details.recycler.views.PersonDetailsFiltersView
@@ -19,7 +19,7 @@ class PersonDetailsAdapter(
   val onTranslationMissingListener: (PersonDetailsItem) -> Unit,
   val onLinksClickListener: (Person) -> Unit,
   val onImageClickListener: () -> Unit,
-  var onFiltersChangeListener: ((List<Mode>) -> Unit),
+  var onFiltersChangeListener: ((PersonDetailsFilters) -> Unit),
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   companion object {

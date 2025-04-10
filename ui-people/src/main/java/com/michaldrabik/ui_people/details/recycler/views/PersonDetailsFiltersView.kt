@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_people.databinding.ViewPersonDetailsFiltersBinding
+import com.michaldrabik.ui_people.details.filters.PersonDetailsFilters
 
 class PersonDetailsFiltersView : FrameLayout {
 
@@ -19,23 +20,33 @@ class PersonDetailsFiltersView : FrameLayout {
     with(binding) {
       viewPersonDetailsFiltersShowsChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
       viewPersonDetailsFiltersMoviesChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
+      viewPersonDetailsFiltersCollectionChip.setOnCheckedChangeListener { _, _ -> onChipCheckChange() }
     }
   }
 
-  var onChipsChangeListener: ((List<Mode>) -> Unit)? = null
+  var onChipsChangeListener: ((PersonDetailsFilters) -> Unit)? = null
   private var isListenerEnabled = true
 
   private fun onChipCheckChange() {
-    if (!isListenerEnabled) return
+    if (!isListenerEnabled) {
+      return
+    }
+
     with(binding) {
-      val ids = viewPersonDetailsFiltersChipGroup.checkedChipIds.map {
+      val ids = viewPersonDetailsFiltersChipGroup.checkedChipIds.mapNotNull {
         when (it) {
           viewPersonDetailsFiltersShowsChip.id -> Mode.SHOWS
           viewPersonDetailsFiltersMoviesChip.id -> Mode.MOVIES
-          else -> throw IllegalStateException()
+          else -> null
         }
       }
-      onChipsChangeListener?.invoke(ids)
+
+      onChipsChangeListener?.invoke(
+        PersonDetailsFilters(
+          modes = ids,
+          onlyCollection = viewPersonDetailsFiltersCollectionChip.isChecked,
+        ),
+      )
     }
   }
 
@@ -43,14 +54,16 @@ class PersonDetailsFiltersView : FrameLayout {
     with(binding) {
       viewPersonDetailsFiltersShowsChip.isEnabled = enabled
       viewPersonDetailsFiltersMoviesChip.isEnabled = enabled
+      viewPersonDetailsFiltersCollectionChip.isEnabled = enabled
     }
   }
 
-  fun bind(types: List<Mode>) {
+  fun bind(filters: PersonDetailsFilters) {
     with(binding) {
       isListenerEnabled = false
-      viewPersonDetailsFiltersShowsChip.isChecked = Mode.SHOWS in types
-      viewPersonDetailsFiltersMoviesChip.isChecked = Mode.MOVIES in types
+      viewPersonDetailsFiltersShowsChip.isChecked = Mode.SHOWS in filters.modes
+      viewPersonDetailsFiltersMoviesChip.isChecked = Mode.MOVIES in filters.modes
+      viewPersonDetailsFiltersCollectionChip.isChecked = filters.onlyCollection
       isListenerEnabled = true
     }
   }

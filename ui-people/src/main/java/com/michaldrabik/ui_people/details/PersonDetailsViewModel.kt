@@ -3,7 +3,6 @@ package com.michaldrabik.ui_people.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.settings.SettingsRepository
 import com.michaldrabik.ui_base.utilities.events.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.SUBSCRIBE_STOP_TIMEOUT
@@ -19,6 +18,7 @@ import com.michaldrabik.ui_people.details.cases.PersonDetailsCreditsCase
 import com.michaldrabik.ui_people.details.cases.PersonDetailsImagesCase
 import com.michaldrabik.ui_people.details.cases.PersonDetailsLoadCase
 import com.michaldrabik.ui_people.details.cases.PersonDetailsTranslationsCase
+import com.michaldrabik.ui_people.details.filters.PersonDetailsFilters
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -84,14 +84,17 @@ class PersonDetailsViewModel @Inject constructor(
 
   fun loadCredits(
     person: Person,
-    personArgs: PersonDetailsArgs?,
-    filters: List<Mode> = emptyList(),
+    personArgs: PersonDetailsArgs? = null,
+    filters: PersonDetailsFilters = PersonDetailsFilters(),
   ) {
     creditsJob?.cancel()
     creditsJob = viewModelScope.launch {
       creditsProgressJob = launchDelayed(500) { setCreditsLoading(true) }
       try {
-        val credits = loadCreditsCase.loadCredits(person, filters)
+        val credits = loadCreditsCase.loadCredits(
+          person = person,
+          filters = filters,
+        )
 
         setCreditsLoading(false)
 

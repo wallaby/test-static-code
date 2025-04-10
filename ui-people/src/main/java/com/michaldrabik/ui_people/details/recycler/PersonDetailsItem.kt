@@ -1,12 +1,12 @@
 package com.michaldrabik.ui_people.details.recycler
 
-import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SpoilersSettings
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_people.details.filters.PersonDetailsFilters
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -72,7 +72,7 @@ sealed class PersonDetailsItem {
   }
 
   data class CreditsFiltersItem(
-    val filters: List<Mode>,
+    val filters: PersonDetailsFilters,
   ) : PersonDetailsItem()
 
   data object CreditsLoadingItem : PersonDetailsItem()

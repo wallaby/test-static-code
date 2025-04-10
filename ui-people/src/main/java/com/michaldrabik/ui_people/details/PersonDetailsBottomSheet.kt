@@ -124,7 +124,12 @@ class PersonDetailsBottomSheet : BaseBottomSheetFragment(R.layout.view_person_de
       onImageClickListener = { openGallery() },
       onImageMissingListener = { item, force -> viewModel.loadMissingImage(item, force) },
       onTranslationMissingListener = { item -> viewModel.loadMissingTranslation(item) },
-      onFiltersChangeListener = { filters -> viewModel.loadCredits(person, null, filters) },
+      onFiltersChangeListener = { filters ->
+        viewModel.loadCredits(
+          person = person,
+          filters = filters,
+        )
+      },
     )
     with(binding.personDetailsRecycler) {
       adapter = this@PersonDetailsBottomSheet.adapter

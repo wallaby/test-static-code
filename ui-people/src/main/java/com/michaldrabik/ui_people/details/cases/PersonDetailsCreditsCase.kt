@@ -16,6 +16,7 @@ import com.michaldrabik.ui_model.Person
 import com.michaldrabik.ui_model.PersonCredit
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SpoilersSettings
+import com.michaldrabik.ui_people.details.filters.PersonDetailsFilters
 import com.michaldrabik.ui_people.details.recycler.PersonDetailsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
@@ -37,8 +38,10 @@ class PersonDetailsCreditsCase @Inject constructor(
 
   suspend fun loadCredits(
     person: Person,
-    filters: List<Mode>,
+    filters: PersonDetailsFilters,
   ) = withContext(dispatchers.IO) {
+    val (modes, onlyCollection) = filters
+
     val myShowsIdsAsync = async { showsRepository.myShows.loadAllIds() }
     val myMoviesIdsAsync = async { moviesRepository.myMovies.loadAllIds() }
     val watchlistShowsIdsAsync = async { showsRepository.watchlistShows.loadAllIds() }
@@ -51,18 +54,29 @@ class PersonDetailsCreditsCase @Inject constructor(
       watchlistShowsIdsAsync,
       watchlistMoviesIdsAsync,
     )
+    val collectionIds = (myShowsIds + myMoviesIds + watchlistShowsId + watchlistMoviesIds).toSet()
 
     val credits = peopleRepository.loadCredits(person)
     credits
       .filter {
-        when {
-          filters.isEmpty() || filters.containsAll(Mode.values().toList()) -> true
-          filters.contains(Mode.SHOWS) -> it.show != null
-          filters.contains(Mode.MOVIES) -> it.movie != null
+        val filterByRelease = (it.releaseDate != null || (it.releaseDate == null && it.isUpcoming))
+
+        val filterByCollection = if (onlyCollection) {
+          it.show?.traktId in collectionIds ||
+            it.movie?.traktId in collectionIds
+        } else {
+          true
+        }
+
+        val filterByMode = when {
+          modes.isEmpty() || modes.containsAll(Mode.entries) -> true
+          modes.contains(Mode.SHOWS) -> it.show != null
+          modes.contains(Mode.MOVIES) -> it.movie != null
           else -> true
         }
-      }.filter { it.releaseDate != null || (it.releaseDate == null && it.isUpcoming) }
-      .sortedWith(
+
+        filterByMode && filterByRelease && filterByCollection
+      }.sortedWith(
         compareByDescending<PersonCredit> { it.releaseDate == null }.thenByDescending { it.releaseDate?.toEpochDay() },
       ).map {
         async {
@@ -83,7 +97,9 @@ class PersonDetailsCreditsCase @Inject constructor(
           }
         }
       }.awaitAll()
-      .groupBy { it.getReleaseDate()?.year }
+      .groupBy {
+        it.getReleaseDate()?.year
+      }
   }
 
   private suspend fun createShowItem(
@@ -92,7 +108,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     watchlistShowsId: List<Long>,
     spoilersSettings: SpoilersSettings,
   ) = show.let {
-    val isMy = it.traktId in myShowsIds
+    val isMyShow = it.traktId in myShowsIds
     val isWatchlist = it.traktId in watchlistShowsId
     val image = showImagesProvider.findCachedImage(it, ImageType.POSTER)
     val translation = when (val language = translationsRepository.getLanguage()) {
@@ -102,7 +118,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     PersonDetailsItem.CreditsShowItem(
       show = it,
       image = image,
-      isMy = isMy,
+      isMy = isMyShow,
       isWatchlist = isWatchlist,
       translation = translation,
       spoilers = spoilersSettings,
@@ -115,7 +131,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     watchlistMoviesId: List<Long>,
     spoilersSettings: SpoilersSettings,
   ) = movie.let {
-    val isMy = it.traktId in myMoviesIds
+    val isWatched = it.traktId in myMoviesIds
     val isWatchlist = it.traktId in watchlistMoviesId
     val image = movieImagesProvider.findCachedImage(it, ImageType.POSTER)
     val translation = when (val language = translationsRepository.getLanguage()) {
@@ -125,7 +141,7 @@ class PersonDetailsCreditsCase @Inject constructor(
     PersonDetailsItem.CreditsMovieItem(
       movie = it,
       image = image,
-      isMy = isMy,
+      isMy = isWatched,
       isWatchlist = isWatchlist,
       translation = translation,
       spoilers = spoilersSettings,
