@@ -70,6 +70,7 @@ enum class Network(
     "CBS Reality (UK)",
     "CBS.com",
   ),
+  CRUNCHYROLL("Crunchyroll"),
   CW("CW", "The CW"),
   DISCOVERY(
     "Discovery",

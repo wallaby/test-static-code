@@ -19,6 +19,7 @@ class NetworkIconProvider @Inject constructor() {
       Network.BBC -> R.drawable.ic_bbc
       Network.CBS -> R.drawable.ic_cbs
       Network.CW -> R.drawable.ic_cw
+      Network.CRUNCHYROLL -> R.drawable.ic_crunchyroll
       Network.DISCOVERY -> R.drawable.ic_discovery
       Network.DISNEY -> R.drawable.ic_disney
       Network.HBO -> R.drawable.ic_hbo
