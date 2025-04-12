@@ -44,6 +44,9 @@
   <string name="textSelectDate">Tarih Seçin</string>
   <string name="textDateSelectionTitle">Tarih Seçimi</string>
   <string name="textDateSelectionDescription">Bunu ne zaman izledin?</string>
+  <string name="textFeedTrending">Gündemde</string>
+  <string name="textFeedPopular">Popüler</string>
+  <string name="textFeedAnticipated">Merakla Beklenen</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d kaldı</item>
     <item quantity="other">%d kaldı</item>

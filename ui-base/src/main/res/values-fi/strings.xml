@@ -43,6 +43,9 @@
   <string name="textSelectDate">Valitse päivä</string>
   <string name="textDateSelectionTitle">Päiväyksen valinta</string>
   <string name="textDateSelectionDescription">Milloin katselit tämän?</string>
+  <string name="textFeedTrending">Trendaavat</string>
+  <string name="textFeedPopular">Suosituimmat</string>
+  <string name="textFeedAnticipated">Odotetuimmat</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d jäljellä</item>
     <item quantity="other">%d jäljellä</item>

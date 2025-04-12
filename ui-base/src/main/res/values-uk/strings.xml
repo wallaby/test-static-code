@@ -43,6 +43,9 @@
   <string name="textSelectDate">Обрати дату</string>
   <string name="textDateSelectionTitle">Вибір дати</string>
   <string name="textDateSelectionDescription">Коли ви це дивилися?</string>
+  <string name="textFeedTrending">У тренді</string>
+  <string name="textFeedPopular">Популярне</string>
+  <string name="textFeedAnticipated">Очікуване</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d залишився</item>
     <item quantity="few">%d залишилось</item>

@@ -44,6 +44,9 @@
   <string name="textSelectDate">选择日期</string>
   <string name="textDateSelectionTitle">日期选择</string>
   <string name="textDateSelectionDescription">你是什么时候观看的？</string>
+  <string name="textFeedTrending">热门趋势</string>
+  <string name="textFeedPopular">最受欢迎</string>
+  <string name="textFeedAnticipated">备受期待</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="other">剩余 %d 集</item>
   </plurals>

@@ -43,6 +43,9 @@
   <string name="textSelectDate">Seleziona data</string>
   <string name="textDateSelectionTitle">Selezione data</string>
   <string name="textDateSelectionDescription">Quando l\'hai guardato?</string>
+  <string name="textFeedTrending">Di tendenza</string>
+  <string name="textFeedPopular">Popolari</string>
+  <string name="textFeedAnticipated">Attesi</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">Ancora %d</item>
     <item quantity="other">Ancora %d</item>

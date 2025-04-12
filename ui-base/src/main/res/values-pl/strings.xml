@@ -44,6 +44,9 @@
   <string name="textSelectDate">Wybierz datę</string>
   <string name="textDateSelectionTitle">Wybór daty</string>
   <string name="textDateSelectionDescription">Kiedy skończyłeś/łaś oglądać?</string>
+  <string name="textFeedTrending">Gorące</string>
+  <string name="textFeedPopular">Popularne</string>
+  <string name="textFeedAnticipated">Wyczekiwane</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d do obejrzenia</item>
     <item quantity="few">%d do obejrzenia</item>

@@ -43,6 +43,9 @@
   <string name="textSelectDate">حدد تاريخ</string>
   <string name="textDateSelectionTitle">تحديد التاريخ</string>
   <string name="textDateSelectionDescription">متى شاهدته؟</string>
+  <string name="textFeedTrending">رائج</string>
+  <string name="textFeedPopular">الأكثر شعبية</string>
+  <string name="textFeedAnticipated">المنتظر</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="zero">بقي %d</item>
     <item quantity="one">بقي %d</item>

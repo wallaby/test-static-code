@@ -44,6 +44,9 @@
   <string name="textSelectDate">Vælg dato</string>
   <string name="textDateSelectionTitle">Datovalg</string>
   <string name="textDateSelectionDescription">Hvornår så du det?</string>
+  <string name="textFeedTrending">Populære lige nu</string>
+  <string name="textFeedPopular">Mest populære</string>
+  <string name="textFeedAnticipated">Imødesete</string>
   <plurals name="textEpisodesLeft" comment="Number of episodes left to see">
     <item quantity="one">%d tilbage</item>
     <item quantity="other">%d tilbage</item>
