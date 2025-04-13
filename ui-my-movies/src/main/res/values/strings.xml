@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">My Movies</string>
+  <string name="menuMyMovies">History</string>
   <string name="menuWatchlistMovies">Watchlist</string>
   <string name="menuHidden">Hidden</string>
 
