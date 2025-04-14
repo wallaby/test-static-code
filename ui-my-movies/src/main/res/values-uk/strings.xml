@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">Мої Фільми</string>
+  <string name="menuMyMovies">Історія</string>
   <string name="menuWatchlistMovies">На потім</string>
   <string name="menuHidden">Приховане</string>
   <string name="textMyMoviesEmpty">Ваша колекція фільмів наразі порожня.\n\nВідвідайте <b>Огляд</b>, щоб додати свій перший фільм.</string>

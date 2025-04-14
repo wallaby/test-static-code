@@ -89,9 +89,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Cacher la <b>note</b> des séries qui ne sont pas dans votre Collection</string>
   <string name="textSettingsSpoilersMovies">Films</string>
   <string name="textSettingsSpoilersMoviesSummary">Gérer les paramètres de spoiler pour les films.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Mes films</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Cacher la <b>description</b> des films ajoutés à Mes films</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Cacher la <b>note</b> des films ajoutés à Mes films</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Historique</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Cacher la <b>description</b> des films ajoutés à l\'historique</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Cacher la <b>notation</b> des films ajoutés à l\'historique</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Cacher la <b>description</b> des films ajoutés à la Watchlist</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Cacher la <b>note</b> des films ajoutés à la Watchlist</string>

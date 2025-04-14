@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">我的电影</string>
+  <string name="menuMyMovies">历史</string>
   <string name="menuWatchlistMovies">待看列表</string>
   <string name="menuHidden">已隐藏</string>
   <string name="textMyMoviesEmpty">当前您的电影合集为空。\n\n访问 <b>发现</b> 选项卡来添加您的第一部电影。</string>

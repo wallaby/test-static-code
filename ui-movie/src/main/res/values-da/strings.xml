@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textInMyMovies">Tilføjet til Mine Film</string>
+  <string name="textInMyMovies">Føjet til historik</string>
   <string name="textInMoviesWatchlist">Tilføjet til Se Senere</string>
   <string name="textInHidden">Skjult</string>
   <string name="textMovieActorsEmpty">Skuespillere er ikke tilgængelige</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textInMyMovies">Añadido a mis películas</string>
+  <string name="textInMyMovies">Añadido al historial</string>
   <string name="textInMoviesWatchlist">Añadido a pendientes</string>
   <string name="textInHidden">Ocultos</string>
   <string name="textMovieActorsEmpty">El elenco no está disponible</string>

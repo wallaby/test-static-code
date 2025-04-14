@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">隐藏不在您收藏中的节目的<b>评分</b></string>
   <string name="textSettingsSpoilersMovies">电影</string>
   <string name="textSettingsSpoilersMoviesSummary">管理影片的剧透设置。</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">我的电影</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">隐藏添加到“我的电影”中的电影的<b>描述</b></string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">隐藏添加到“我的电影”中的电影的<b>评分</b></string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">历史</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">隐藏已添加至观看历史的电影简介</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">隐藏已添加至观看历史的电影评分</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">待看列表</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">隐藏添加到“观看列表”中的电影的<b>描述</b></string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">隐藏添加到“观看列表”中的电影的<b>评分</b></string>

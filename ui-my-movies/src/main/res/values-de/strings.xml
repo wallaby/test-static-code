@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">Meine Filme</string>
+  <string name="menuMyMovies">Geschichte</string>
   <string name="menuWatchlistMovies">Watchlist</string>
   <string name="menuHidden">Versteckt</string>
   <string name="textMyMoviesEmpty">Deine Filmsammlung ist derzeit leer.\n\nGehe auf den <b>Entdecken</b>Tab um deinen ersten Film hinzuzufügen.</string>

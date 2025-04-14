@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Nascondi la <b>valutazione</b> degli spettacoli che non sono nella tua collezione</string>
   <string name="textSettingsSpoilersMovies">Film</string>
   <string name="textSettingsSpoilersMoviesSummary">Gestisci le impostazioni degli spoiler per i film.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">I miei film</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Nascondi la <b>descrizione</b> dei film aggiunti a \"I miei film\"</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Nascondi la <b>valutazione</b> dei film aggiunti a \"I miei film\"</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Cronologia</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Nascondi la <b>descrizione</b> dei film aggiunti alla cronologia</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Nascondi la <b>valutazione</b> dei film aggiunti alla cronologia</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Da vedere</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Nascondi la <b>descrizione</b> dei film aggiunti a \"Da vedere\"</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Nascondi la <b>valutazione</b> dei film aggiunti a \"Da vedere\"</string>

@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Piilota kokoelman ulkopuolisten sarjojen <b>arviot</b>.</string>
   <string name="textSettingsSpoilersMovies">Elokuvat</string>
   <string name="textSettingsSpoilersMoviesSummary">Hallitse elokuvien jounipaljastusasetuksia.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Omat elokuvat</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Piilota omiin elokuviin lisättyjen elokuvien <b>kuvaukset</b>.</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Piilota omiin elokuviin lisättyjen elokuvien <b>arviot</b>.</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Historia</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Piilota historiaan lisättyjen elokuvien <b>kuvaukset</b>.</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Piilota historiaan lisättyjen elokuvien <b>arviot</b>.</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Katselulista</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Piilota katselulistalle lisättyjen elokuvien <b>kuvaukset</b>.</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Piilota katselulistalle lisättyjen elokuvien <b>arviot</b>.</string>

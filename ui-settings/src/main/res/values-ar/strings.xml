@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">إخفاء <b>تقييم</b> المسلسلات التي ليست في مجموعتك</string>
   <string name="textSettingsSpoilersMovies">أفلام</string>
   <string name="textSettingsSpoilersMoviesSummary">إدارة إعدادات الحرق للأفلام.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">أفلامي</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">إخفاء <b>وصف</b> الأفلام المضافة إلى أفلامي</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">إخفاء <b>تقييم</b> الأفلام المضافة إلى أفلامي</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">تاريخ</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">إخفاء <b>وصف</b> الأفلام المضافة إلى السجل</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">إخفاء <b>تقييم</b> الأفلام المضافة إلى السجل</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">قائمة المشاهدة</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">إخفاء <b>وصف</b> الأفلام المضافة إلى قائمة المشاهدة</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">إخفاء <b>تقييم</b> الأفلام المضافة إلى قائمة المشاهدة</string>

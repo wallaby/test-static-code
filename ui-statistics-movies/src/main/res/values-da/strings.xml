@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textStatisticsMovies">Statistik</string>
-  <string name="textStatisticsMoviesEmpty">Der skal være mindst én film i <b>Mine Film</b>\nfør statistik kan vises.</string>
+  <string name="textStatisticsMoviesEmpty">Der skal være mindst én film i historikken, før statistik kan vises.</string>
   <string name="textStatisticsMoviesTotalTimeSpent">Samlet tid brugt på at se</string>
   <string name="textStatisticsMoviesTotalTimeItIs">og det er</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s timer</string>

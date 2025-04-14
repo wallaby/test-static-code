@@ -91,9 +91,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Skjul <b>bedømmelse</b> af serier, der ikke er i din Samling</string>
   <string name="textSettingsSpoilersMovies">Film</string>
   <string name="textSettingsSpoilersMoviesSummary">Administrer spoiler indstillinger for film.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Mine Film</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Skjul <b>beskrivelse</b> af film føjet til Mine Film</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Skjul <b>bedømmelse</b> af film føjet til Mine Film</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Historie</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Skjul <b>beskrivelse</b> af film tilføjet til historik</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Skjul <b>bedømmelse</b> af film tilføjet til historik</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Se Senere</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Skjul <b>beskrivelse</b> af film føjet til Se Senere</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Skjul <b>bedømmelse</b> af film føjet til Se Senere</string>

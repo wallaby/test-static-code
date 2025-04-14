@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Ukryj <b>ocenę</b> seriali, które nie są w twojej kolekcji</string>
   <string name="textSettingsSpoilersMovies">Filmy</string>
   <string name="textSettingsSpoilersMoviesSummary">Ustawienia spoilerów dla filmów.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Moje Filmy</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Ukryj <b>opis</b> filmów dodanych do Moich Filmów</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Ukryj <b>ocenę</b> filmów dodanych do Moich Filmów</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Historia</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Ukryj <b>opis</b> filmów dodanych do historii</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Ukryj <b>ocenę</b> filmów dodanych do historii</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Na Później</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Ukryj <b>opis</b> filmów dodanych do Na Później</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Ukryj <b>ocenę</b> filmów dodanych do Na Później</string>

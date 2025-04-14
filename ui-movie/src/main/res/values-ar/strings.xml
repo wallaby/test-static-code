@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textInMyMovies">تمت الإضافة إلى أفلامي</string>
+  <string name="textInMyMovies">إضافة إلى السجل</string>
   <string name="textInMoviesWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="textInHidden">المخفية</string>
   <string name="textMovieActorsEmpty">قائمة الممثلين غير متاحة</string>

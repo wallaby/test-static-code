@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textInMyMovies">Filmlerime eklendi</string>
+  <string name="textInMyMovies">Geçmişe eklendi</string>
   <string name="textInMoviesWatchlist">İstek listesine eklendi</string>
   <string name="textInHidden">Gizlenmiş</string>
   <string name="textMovieActorsEmpty">Oyuncular mevcut değil</string>

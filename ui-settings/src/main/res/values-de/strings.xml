@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription"><b>Bewertung</b> von Serien ausblenden, die nicht in deiner Sammlung sind</string>
   <string name="textSettingsSpoilersMovies">Filme</string>
   <string name="textSettingsSpoilersMoviesSummary">Spoilereinstellungen für Filme verwalten.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Meine Filme</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription"><b>Beschreibung</b> von Filmen ausblenden, die zu Meine Filme hinzugefügt wurden</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription"><b>Bewertung</b> von Filmen ausblenden, die zu Meine Filme hinzugefügt wurden</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Geschichte</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription"><b>Beschreibung</b> von Filmen ausblenden, die zu Versteckt hinzugefügt wurden</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription"><b>Bewertung</b> von Filmen ausblenden, die zum Verlauf hinzugefügt wurden</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription"><b>Beschreibung</b> von Filmen ausblenden, die zur Watchlist hinzugefügt wurden</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription"><b>Bewertung</b> von Filmen ausblenden, die zur Watchlist hinzugefügt wurden</string>
