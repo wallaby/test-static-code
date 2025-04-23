@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Приховати <b>оцінку</b> серіалів, які не додані до вашої Колекції</string>
   <string name="textSettingsSpoilersMovies">Фільми</string>
   <string name="textSettingsSpoilersMoviesSummary">Керування налаштуваннями спойлерів для фільмів.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Мої Фільми</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Приховати <b>опис</b> фільмів, доданих в Мої Фільми</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Приховати <b>оцінку</b> фільмів, доданих в Мої Фільми</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Історія</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Приховати <b>опис</b> фільмів, доданих до історії</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Приховати <b>оцінку</b> фільмів, доданих до історії</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">На потім</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Приховати <b>опис</b> фільмів, доданих в На потім</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Приховати <b>оцінку</b> фільмів, доданих в На потім</string>

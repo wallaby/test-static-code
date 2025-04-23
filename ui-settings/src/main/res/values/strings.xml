@@ -91,9 +91,9 @@
 
   <string name="textSettingsSpoilersMovies">Movies</string>
   <string name="textSettingsSpoilersMoviesSummary">Manage spoiler settings for movies.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">My Movies</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide <b>description</b> of movies added to My Movies</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Hide <b>rating</b> of movies added to My Movies</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">History</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Hide <b>description</b> of movies added to history</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Hide <b>rating</b> of movies added to history</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Watchlist</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">Hide <b>description</b> of movies added to Watchlist</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">Hide <b>rating</b> of movies added to Watchlist</string>

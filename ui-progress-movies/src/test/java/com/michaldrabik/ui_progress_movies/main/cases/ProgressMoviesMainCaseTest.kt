@@ -40,7 +40,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
   }
 
   @Test
-  fun `Should add movie to My Movies properly`() =
+  fun `Should add movie to movies history properly`() =
     runTest {
       val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = IdTrakt(123)))
 
@@ -52,7 +52,7 @@ class ProgressMoviesMainCaseTest : BaseMockTest() {
     }
 
   @Test
-  fun `Should add movie to My Movies properly using only ID`() =
+  fun `Should add movie to movies history properly using only ID`() =
     runTest {
       SUT.addToMyMovies(IdTrakt(123))
 

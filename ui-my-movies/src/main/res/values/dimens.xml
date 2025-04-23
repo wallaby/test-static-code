@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="myMoviesTabsTranslation">-7dp</dimen>
+  <dimen name="myMoviesTabsTranslation">-12dp</dimen>
 
   <dimen name="myMoviesSearchViewPadding">104dp</dimen>
   <dimen name="myMoviesTabsViewPadding">136dp</dimen>

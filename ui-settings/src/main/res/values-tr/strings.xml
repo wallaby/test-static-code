@@ -87,9 +87,9 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Listelerinizde olmayan diziler için <b>derecelendirmeyi</b> gizle</string>
   <string name="textSettingsSpoilersMovies">Filmler</string>
   <string name="textSettingsSpoilersMoviesSummary">Filmler için spoiler ayarlarını yönet.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Filmlerim</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Filmlerim sekmesine eklenen diziler için <b>açıklamayı</b> gizle</string>
-  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Filmlerim sekmesine eklenen diziler için <b>derecelendirmeyi</b> gizle</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Tarih</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Geçmişe eklenen filmlerin <b>açıklamasını</b> gizle</string>
+  <string name="textSettingsSpoilersMoviesRatingsMyDescription">Geçmişe eklenen filmlerin <b>puanını</b> gizle</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">İstek Listesi</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistDescription">İzleme listesine eklenen filmler için <b>açıklamayı</b> gizle</string>
   <string name="textSettingsSpoilersMoviesRatingsWatchlistDescription">İzleme listesine eklenen filmler için <b>derecelendirmeyi</b> gizle</string>

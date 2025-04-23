@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">Omat elokuvat</string>
+  <string name="menuMyMovies">Historia</string>
   <string name="menuWatchlistMovies">Katselulista</string>
   <string name="menuHidden">Piilotetut</string>
   <string name="textMyMoviesEmpty">Elokuvakoelmasi on tyhjä.\n\nLisää ensimmäinen elokuvasi <b>Etsi</b>-osiosta.</string>

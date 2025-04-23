@@ -119,7 +119,7 @@ internal class BackupImportMoviesRunner @Inject constructor(
       val myMovie = MyMovie.fromTraktId(movie.traktId, timestamp)
       localSource.myMovies.insert(listOf(myMovie))
 
-      Timber.d("Added to My Movies ${movie.traktId} ...")
+      Timber.d("Added to history ${movie.traktId} ...")
     }
   }
 

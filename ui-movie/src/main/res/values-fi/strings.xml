@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textInMyMovies">Lisätty omiin elokuviin</string>
+  <string name="textInMyMovies">Lisättiin historiaan</string>
   <string name="textInMoviesWatchlist">Lisätty katselulistalle</string>
   <string name="textInHidden">Piilotetut</string>
   <string name="textMovieActorsEmpty">Näyttelijät eivät ole saatavilla</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">I miei film</string>
+  <string name="menuMyMovies">Cronologia</string>
   <string name="menuWatchlistMovies">Da vedere</string>
   <string name="menuHidden">Nascosti</string>
   <string name="textMyMoviesEmpty">La tua raccolta di film è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere il tuo primo film.</string>

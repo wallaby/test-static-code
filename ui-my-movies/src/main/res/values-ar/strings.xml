@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">أفلامي</string>
+  <string name="menuMyMovies">تاريخ</string>
   <string name="menuWatchlistMovies">قائمة المشاهدة</string>
   <string name="menuHidden">المخفية</string>
   <string name="textMyMoviesEmpty">مجموعة أفلامك فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> وأضف فيلمك الأول.</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">Mine Film</string>
+  <string name="menuMyMovies">Historie</string>
   <string name="menuWatchlistMovies">Se Senere</string>
   <string name="menuHidden">Skjult</string>
   <string name="textMyMoviesEmpty">Din filmsamling er tom i øjeblikket.\n\nBesøg <b>Opdag</b>-fanen for at tilføje din første film.</string>

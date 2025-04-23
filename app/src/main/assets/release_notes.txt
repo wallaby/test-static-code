@@ -1,2 +1,4 @@
-- Added the ability to see the date when a movie was watched in its details screen.
-- Updated language translations
+- Added links section for episode details
+- Added option to filter person credits by collection
+- Updated feed options for discover screen
+- Renamed "My Movies" to "History" for clarity

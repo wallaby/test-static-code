@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textInMyMovies">Додано до моїх фільмів</string>
+  <string name="textInMyMovies">Додано до історії</string>
   <string name="textInMoviesWatchlist">Додано в \'На потім\'</string>
   <string name="textInHidden">Приховане</string>
   <string name="textMovieActorsEmpty">Актори недоступні</string>

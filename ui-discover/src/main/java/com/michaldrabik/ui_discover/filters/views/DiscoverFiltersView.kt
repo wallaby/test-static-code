@@ -61,7 +61,7 @@ class DiscoverFiltersView : FrameLayout {
       discoverFeedChip.text = when (feed) {
         TRENDING -> context.getString(R.string.textFeedTrending)
         POPULAR -> context.getString(R.string.textFeedPopular)
-        ANTICIPATED -> context.getString(R.string.textFeedPopular)
+        ANTICIPATED -> context.getString(R.string.textFeedAnticipated)
         RECENT -> context.getString(R.string.textSortNewest)
       }
     }
