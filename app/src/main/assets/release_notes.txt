@@ -1,4 +1,2 @@
-- Added links section for episode details
-- Added option to filter person credits by collection
-- Updated feed options for discover screen
-- Renamed "My Movies" to "History" for clarity
+- Handle Trakt sync dropped shows import
+- Updated language translations
