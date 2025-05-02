@@ -1,4 +1,9 @@
 # noinspection EditorConfigKeyCorrectness
+[**/generated/**]
+ktlint = disabled
+
+[**/kspCaches/**]
+ktlint = disabled
 
 [*.{kt,kts}]
 indent_size = 2
