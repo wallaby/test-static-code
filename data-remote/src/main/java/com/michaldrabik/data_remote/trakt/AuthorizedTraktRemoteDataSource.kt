@@ -101,6 +101,8 @@ interface AuthorizedTraktRemoteDataSource {
 
   suspend fun deleteHiddenShow(request: SyncExportRequest)
 
+  suspend fun deleteDroppedShow(request: SyncExportRequest)
+
   suspend fun deleteHiddenMovie(request: SyncExportRequest)
 
   suspend fun deleteRating(show: Show)

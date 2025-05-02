@@ -7,7 +7,10 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.common.sheets.remove_trakt.RemoveTraktBottomSheet.Mode
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.delay
 import javax.inject.Inject
+
+private const val TRAKT_DELAY = 1500L
 
 @ViewModelScoped
 class RemoveTraktHiddenCase @Inject constructor(
@@ -26,6 +29,8 @@ class RemoveTraktHiddenCase @Inject constructor(
       Mode.SHOW -> {
         val request = SyncExportRequest(shows = items)
         remoteSource.deleteHiddenShow(request)
+        delay(TRAKT_DELAY)
+        remoteSource.deleteDroppedShow(request)
       }
       Mode.MOVIE -> {
         val request = SyncExportRequest(movies = items)
