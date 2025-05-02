@@ -157,18 +157,28 @@ class TraktExportWatchedRunner @Inject constructor(
 
   private suspend fun exportHidden() =
     coroutineScope {
-      Timber.d("Exporting hidden items...")
+      Timber.d("Exporting hidden/dropped items...")
 
-      val remoteShowsAsync = async { remoteSource.fetchHiddenShows() }
+      val remoteHiddenShowsAsync = async { remoteSource.fetchHiddenShows() }
+      val remoteDroppedShowsAsync = async { remoteSource.fetchDroppedShows() }
       val remoteMoviesAsync = async { remoteSource.fetchHiddenMovies() }
-      val (remoteShows, remoteMovies) = awaitAll(remoteShowsAsync, remoteMoviesAsync)
+
+      val (remoteHiddenShows, remoteDroppedShows, remoteMovies) = awaitAll(
+        remoteHiddenShowsAsync,
+        remoteDroppedShowsAsync,
+        remoteMoviesAsync,
+      )
 
       val showsAsync = async { localSource.archiveShows.getAll() }
       val moviesAsync = async { localSource.archiveMovies.getAll() }
       val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
 
-      val remoteShowsIds = remoteShows.mapNotNull { it.show?.ids?.trakt }
-      val remoteMoviesIds = remoteMovies.mapNotNull { it.movie?.ids?.trakt }
+      val remoteShowsIds = (remoteHiddenShows + remoteDroppedShows)
+        .distinctBy { it.show?.ids?.trakt }
+        .mapNotNull { it.show?.ids?.trakt }
+
+      val remoteMoviesIds = remoteMovies
+        .mapNotNull { it.movie?.ids?.trakt }
 
       val showsItems = localShows
         .filter { (it as Show).idTrakt !in remoteShowsIds }
@@ -191,7 +201,7 @@ class TraktExportWatchedRunner @Inject constructor(
           }
         }
 
-      Timber.d("Exporting ${showsItems.size} hidden shows...")
+      Timber.d("Exporting ${showsItems.size} hidden/dropped shows...")
       if (showsItems.isNotEmpty()) {
         showsItems.chunked(500).forEach { chunk ->
           remoteSource.postHiddenShows(shows = chunk)

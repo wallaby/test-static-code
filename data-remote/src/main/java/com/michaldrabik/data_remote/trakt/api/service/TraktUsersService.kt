@@ -26,6 +26,12 @@ interface TraktUsersService {
     @Query("limit") pageLimit: Int,
   ): Response<List<HiddenItem>>
 
+  @GET("users/hidden/dropped?type=show&extended=full")
+  suspend fun fetchDroppedShows(
+    @Query("page") page: Int,
+    @Query("limit") pageLimit: Int,
+  ): Response<List<HiddenItem>>
+
   @POST("users/hidden/progress_watched")
   suspend fun postHiddenShows(
     @Body request: SyncExportRequest,

@@ -54,6 +54,18 @@ internal class AuthorizedTraktApi(
     return results
   }
 
+  override suspend fun fetchDroppedShows(): List<HiddenItem> {
+    var page = 1
+    val results = mutableListOf<HiddenItem>()
+
+    do {
+      val response = usersService.fetchDroppedShows(page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(response.body().orEmpty())
+      page += 1
+    } while (page <= response.headers().getPaginationPageCount())
+    return results
+  }
+
   override suspend fun postHiddenShows(shows: List<SyncExportItem>) {
     usersService.postHiddenShows(SyncExportRequest(shows = shows))
   }

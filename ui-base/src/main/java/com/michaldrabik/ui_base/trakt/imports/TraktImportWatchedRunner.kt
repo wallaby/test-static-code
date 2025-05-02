@@ -123,9 +123,15 @@ class TraktImportWatchedRunner @Inject constructor(
         .fetchSyncWatchedShows("full")
         .distinctBy { it.show?.ids?.trakt }
 
-      Timber.d("Importing hidden shows...")
-      remoteAuthSource
-        .fetchHiddenShows()
+      Timber.d("Importing hidden/dropped shows...")
+
+      val (remoteHiddenShows, remoteDroppedShows) = awaitAll(
+        async { remoteAuthSource.fetchHiddenShows() },
+        async { remoteAuthSource.fetchDroppedShows() },
+      )
+
+      (remoteHiddenShows + remoteDroppedShows)
+        .distinctBy { it.show?.ids?.trakt }
         .forEach { item ->
           item.show?.let {
             val show = mappers.show.fromNetwork(it)
@@ -320,7 +326,9 @@ class TraktImportWatchedRunner @Inject constructor(
 
       Timber.d("Importing hidden movies...")
 
-      val hiddenMovies = remoteAuthSource.fetchHiddenMovies()
+      val hiddenMovies = withContext(dispatchers.IO) {
+        remoteAuthSource.fetchHiddenMovies()
+      }
       hiddenMovies.forEach { hiddenMovie ->
         hiddenMovie.movie?.let {
           val movie = mappers.movie.fromNetwork(it)

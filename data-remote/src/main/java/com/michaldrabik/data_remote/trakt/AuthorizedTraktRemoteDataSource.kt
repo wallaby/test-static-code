@@ -39,6 +39,8 @@ interface AuthorizedTraktRemoteDataSource {
 
   suspend fun fetchHiddenShows(): List<HiddenItem>
 
+  suspend fun fetchDroppedShows(): List<HiddenItem>
+
   suspend fun postHiddenShows(shows: List<SyncExportItem> = emptyList())
 
   suspend fun postHiddenMovies(movies: List<SyncExportItem> = emptyList())
