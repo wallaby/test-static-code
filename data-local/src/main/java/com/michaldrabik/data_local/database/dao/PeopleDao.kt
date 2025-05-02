@@ -27,11 +27,59 @@ interface PeopleDao : BaseDao<Person>, PeopleLocalDataSource {
   override suspend fun getById(tmdbId: Long): Person?
 
   @Query(
-    "SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodes_count FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_show = :showTraktId"
+    """
+    SELECT
+    people.id_tmdb,
+    people.id_trakt,
+    people.id_imdb,
+    people.name,
+    people.biography,
+    people.biography_translation,
+    people.birthday,
+    people.birthplace,
+    people.deathday,
+    people.image_path,
+    people.homepage,
+    people.created_at,
+    people.updated_at,
+    people.details_updated_at,
+    people_shows_movies.department AS department,
+    people_shows_movies.character AS character,
+    people_shows_movies.job AS job,
+    people_shows_movies.episodes_count AS episodes_count
+    FROM people
+    INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb
+    WHERE people_shows_movies.id_trakt_show = :showTraktId
+    """
   )
   override suspend fun getAllForShow(showTraktId: Long): List<Person>
 
-  @Query("SELECT people.*, people_shows_movies.department AS department, people_shows_movies.character AS character, people_shows_movies.job AS job, people_shows_movies.episodes_count AS episodes_count FROM people INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb WHERE people_shows_movies.id_trakt_movie = :movieTraktId")
+  @Query(
+    """
+    SELECT
+    people.id_tmdb,
+    people.id_trakt,
+    people.id_imdb,
+    people.name,
+    people.biography,
+    people.biography_translation,
+    people.birthday,
+    people.birthplace,
+    people.deathday,
+    people.image_path,
+    people.homepage,
+    people.created_at,
+    people.updated_at,
+    people.details_updated_at,
+    people_shows_movies.department AS department,
+    people_shows_movies.character AS character,
+    people_shows_movies.job AS job,
+    people_shows_movies.episodes_count AS episodes_count
+    FROM people
+    INNER JOIN people_shows_movies ON people_shows_movies.id_tmdb_person = people.id_tmdb
+    WHERE people_shows_movies.id_trakt_movie = :movieTraktId
+    """
+  )
   override suspend fun getAllForMovie(movieTraktId: Long): List<Person>
 
   @Query("SELECT * FROM people")

@@ -12,7 +12,28 @@ import com.michaldrabik.data_local.sources.WatchlistMoviesLocalDataSource
 interface WatchlistMoviesDao : WatchlistMoviesLocalDataSource {
 
   @Query(
-    "SELECT movies.*, movies_see_later.created_at, movies_see_later.updated_at FROM movies " +
+    "SELECT " +
+      "movies.id_trakt, " +
+      "movies.id_tmdb, " +
+      "movies.id_imdb, " +
+      "movies.id_slug, " +
+      "movies.title, " +
+      "movies.year, " +
+      "movies.overview, " +
+      "movies.released, " +
+      "movies.runtime, " +
+      "movies.country, " +
+      "movies.trailer, " +
+      "movies.language, " +
+      "movies.homepage, " +
+      "movies.status, " +
+      "movies.rating, " +
+      "movies.votes, " +
+      "movies.comment_count, " +
+      "movies.genres, " +
+      "movies_see_later.updated_at, " +
+      "movies_see_later.created_at " +
+      "FROM movies " +
       "INNER JOIN movies_see_later USING(id_trakt)",
   )
   override suspend fun getAll(): List<Movie>

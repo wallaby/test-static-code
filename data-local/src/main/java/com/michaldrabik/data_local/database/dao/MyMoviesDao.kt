@@ -12,13 +12,55 @@ import com.michaldrabik.data_local.sources.MyMoviesLocalDataSource
 interface MyMoviesDao : MyMoviesLocalDataSource {
 
   @Query(
-    "SELECT movies.*, movies_my_movies.updated_at AS updated_at FROM movies " +
+    "SELECT " +
+      "movies.id_trakt, " +
+      "movies.id_tmdb, " +
+      "movies.id_imdb, " +
+      "movies.id_slug, " +
+      "movies.title, " +
+      "movies.year, " +
+      "movies.overview, " +
+      "movies.released, " +
+      "movies.runtime, " +
+      "movies.country, " +
+      "movies.trailer, " +
+      "movies.language, " +
+      "movies.homepage, " +
+      "movies.status, " +
+      "movies.rating, " +
+      "movies.votes, " +
+      "movies.comment_count, " +
+      "movies.genres, " +
+      "movies_my_movies.updated_at, " +
+      "movies_my_movies.created_at " +
+      "FROM movies " +
       "INNER JOIN movies_my_movies USING(id_trakt)",
   )
   override suspend fun getAll(): List<Movie>
 
   @Query(
-    "SELECT movies.*, movies_my_movies.updated_at AS updated_at FROM movies " +
+    "SELECT " +
+      "movies.id_trakt, " +
+      "movies.id_tmdb, " +
+      "movies.id_imdb, " +
+      "movies.id_slug, " +
+      "movies.title, " +
+      "movies.year, " +
+      "movies.overview, " +
+      "movies.released, " +
+      "movies.runtime, " +
+      "movies.country, " +
+      "movies.trailer, " +
+      "movies.language, " +
+      "movies.homepage, " +
+      "movies.status, " +
+      "movies.rating, " +
+      "movies.votes, " +
+      "movies.comment_count, " +
+      "movies.genres, " +
+      "movies.created_at, " +
+      "movies_my_movies.updated_at " +
+      "FROM movies " +
       "INNER JOIN movies_my_movies USING(id_trakt) WHERE id_trakt IN (:ids)",
   )
   override suspend fun getAll(ids: List<Long>): List<Movie>
@@ -33,7 +75,29 @@ interface MyMoviesDao : MyMoviesLocalDataSource {
   override suspend fun getAllTraktIds(): List<Long>
 
   @Query(
-    "SELECT movies.*, movies_my_movies.updated_at AS updated_at FROM movies INNER JOIN movies_my_movies USING(id_trakt) WHERE id_trakt == :traktId",
+    "SELECT " +
+      "movies.id_trakt, " +
+      "movies.id_tmdb, " +
+      "movies.id_imdb, " +
+      "movies.id_slug, " +
+      "movies.title, " +
+      "movies.year, " +
+      "movies.overview, " +
+      "movies.released, " +
+      "movies.runtime, " +
+      "movies.country, " +
+      "movies.trailer, " +
+      "movies.language, " +
+      "movies.homepage, " +
+      "movies.status, " +
+      "movies.rating, " +
+      "movies.votes, " +
+      "movies.comment_count, " +
+      "movies.genres, " +
+      "movies.created_at, " +
+      "movies_my_movies.updated_at " +
+      "FROM movies " +
+      "INNER JOIN movies_my_movies USING(id_trakt) WHERE id_trakt == :traktId",
   )
   override suspend fun getById(traktId: Long): Movie?
 

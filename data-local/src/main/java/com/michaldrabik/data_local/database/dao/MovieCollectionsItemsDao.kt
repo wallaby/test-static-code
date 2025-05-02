@@ -15,7 +15,31 @@ interface MovieCollectionsItemsDao :
   MovieCollectionsItemsLocalDataSource {
 
   @Query(
-    "SELECT movies.*, movies_collections_items.created_at, movies_collections_items.updated_at FROM movies INNER JOIN movies_collections_items USING(id_trakt) WHERE id_trakt_collection == :collectionId ORDER BY rank ASC",
+    """
+    SELECT
+    movies.id_trakt,
+    movies.id_tmdb,
+    movies.id_imdb,
+    movies.id_slug,
+    movies.title,
+    movies.year,
+    movies.overview,
+    movies.released,
+    movies.runtime,
+    movies.country,
+    movies.trailer,
+    movies.language,
+    movies.homepage,
+    movies.status,
+    movies.rating,
+    movies.votes,
+    movies.comment_count,
+    movies.genres,
+    movies_collections_items.updated_at AS updated_at,
+    movies_collections_items.created_at AS created_at
+    FROM movies INNER JOIN movies_collections_items USING(id_trakt)
+    WHERE id_trakt_collection == :collectionId
+    ORDER BY rank ASC""",
   )
   override suspend fun getById(collectionId: Long): List<Movie>
 

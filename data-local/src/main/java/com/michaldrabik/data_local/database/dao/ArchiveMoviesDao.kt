@@ -14,12 +14,56 @@ import com.michaldrabik.data_local.sources.ArchiveMoviesLocalDataSource
 interface ArchiveMoviesDao : ArchiveMoviesLocalDataSource {
 
   @Query(
-    "SELECT movies.*, movies_archive.created_at AS created_at, movies_archive.updated_at AS updated_at FROM movies INNER JOIN movies_archive USING(id_trakt)",
+    "SELECT " +
+      "movies.id_trakt, " +
+      "movies.id_tmdb, " +
+      "movies.id_imdb, " +
+      "movies.id_slug, " +
+      "movies.title, " +
+      "movies.year, " +
+      "movies.overview, " +
+      "movies.released, " +
+      "movies.runtime, " +
+      "movies.country, " +
+      "movies.trailer, " +
+      "movies.language, " +
+      "movies.homepage, " +
+      "movies.status, " +
+      "movies.rating, " +
+      "movies.votes, " +
+      "movies.comment_count, " +
+      "movies.genres, " +
+      "movies_archive.updated_at, " +
+      "movies_archive.created_at " +
+      "FROM movies " +
+      "INNER JOIN movies_archive USING(id_trakt)",
   )
   override suspend fun getAll(): List<Movie>
 
   @Query(
-    "SELECT movies.*, movies_archive.created_at AS created_at, movies_archive.updated_at AS updated_at FROM movies INNER JOIN movies_archive USING(id_trakt) WHERE id_trakt IN (:ids)",
+    "SELECT " +
+      "movies.id_trakt, " +
+      "movies.id_tmdb, " +
+      "movies.id_imdb, " +
+      "movies.id_slug, " +
+      "movies.title, " +
+      "movies.year, " +
+      "movies.overview, " +
+      "movies.released, " +
+      "movies.runtime, " +
+      "movies.country, " +
+      "movies.trailer, " +
+      "movies.language, " +
+      "movies.homepage, " +
+      "movies.status, " +
+      "movies.rating, " +
+      "movies.votes, " +
+      "movies.comment_count, " +
+      "movies.genres, " +
+      "movies_archive.updated_at, " +
+      "movies_archive.created_at " +
+      "FROM movies " +
+      "INNER JOIN movies_archive USING(id_trakt) WHERE id_trakt IN (:ids)",
   )
   override suspend fun getAll(ids: List<Long>): List<Movie>
 

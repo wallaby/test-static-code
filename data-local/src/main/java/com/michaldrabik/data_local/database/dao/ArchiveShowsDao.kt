@@ -14,12 +14,70 @@ import com.michaldrabik.data_local.sources.ArchiveShowsLocalDataSource
 interface ArchiveShowsDao : ArchiveShowsLocalDataSource {
 
   @Query(
-    "SELECT shows.*, shows_archive.created_at AS created_at, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt)",
+    "SELECT " +
+      "shows.id_trakt, " +
+      "shows.id_tvdb, " +
+      "shows.id_tmdb, " +
+      "shows.id_imdb, " +
+      "shows.id_slug, " +
+      "shows.id_tvrage, " +
+      "shows.title, " +
+      "shows.year, " +
+      "shows.overview, " +
+      "shows.first_aired, " +
+      "shows.runtime, " +
+      "shows.airtime_day, " +
+      "shows.airtime_time, " +
+      "shows.airtime_timezone, " +
+      "shows.certification, " +
+      "shows.network, " +
+      "shows.country, " +
+      "shows.trailer, " +
+      "shows.homepage, " +
+      "shows.status, " +
+      "shows.rating, " +
+      "shows.votes, " +
+      "shows.comment_count, " +
+      "shows.genres, " +
+      "shows.aired_episodes, " +
+      "shows_archive.updated_at, " +
+      "shows_archive.created_at " +
+      "FROM shows " +
+      "INNER JOIN shows_archive USING(id_trakt)",
   )
   override suspend fun getAll(): List<Show>
 
   @Query(
-    "SELECT shows.*, shows_archive.created_at AS created_at, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt) WHERE id_trakt IN (:ids)",
+    "SELECT " +
+      "shows.id_trakt, " +
+      "shows.id_tvdb, " +
+      "shows.id_tmdb, " +
+      "shows.id_imdb, " +
+      "shows.id_slug, " +
+      "shows.id_tvrage, " +
+      "shows.title, " +
+      "shows.year, " +
+      "shows.overview, " +
+      "shows.first_aired, " +
+      "shows.runtime, " +
+      "shows.airtime_day, " +
+      "shows.airtime_time, " +
+      "shows.airtime_timezone, " +
+      "shows.certification, " +
+      "shows.network, " +
+      "shows.country, " +
+      "shows.trailer, " +
+      "shows.homepage, " +
+      "shows.status, " +
+      "shows.rating, " +
+      "shows.votes, " +
+      "shows.comment_count, " +
+      "shows.genres, " +
+      "shows.aired_episodes, " +
+      "shows_archive.updated_at, " +
+      "shows_archive.created_at " +
+      "FROM shows " +
+      "INNER JOIN shows_archive USING(id_trakt) WHERE id_trakt IN (:ids)",
   )
   override suspend fun getAll(ids: List<Long>): List<Show>
 

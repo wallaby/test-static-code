@@ -14,7 +14,36 @@ import com.michaldrabik.data_local.sources.WatchlistShowsLocalDataSource
 interface WatchlistShowsDao : WatchlistShowsLocalDataSource {
 
   @Query(
-    "SELECT shows.*, shows_see_later.created_at AS created_at, shows_see_later.updated_at AS updated_at FROM shows INNER JOIN shows_see_later USING(id_trakt)",
+    "SELECT " +
+      "shows.id_trakt, " +
+      "shows.id_tvdb, " +
+      "shows.id_tmdb, " +
+      "shows.id_imdb, " +
+      "shows.id_slug, " +
+      "shows.id_tvrage, " +
+      "shows.title, " +
+      "shows.year, " +
+      "shows.overview, " +
+      "shows.first_aired, " +
+      "shows.runtime, " +
+      "shows.airtime_day, " +
+      "shows.airtime_time, " +
+      "shows.airtime_timezone, " +
+      "shows.certification, " +
+      "shows.network, " +
+      "shows.country, " +
+      "shows.trailer, " +
+      "shows.homepage, " +
+      "shows.status, " +
+      "shows.rating, " +
+      "shows.votes, " +
+      "shows.comment_count, " +
+      "shows.genres, " +
+      "shows.aired_episodes, " +
+      "shows_see_later.updated_at, " +
+      "shows_see_later.created_at " +
+      "FROM shows " +
+      "INNER JOIN shows_see_later USING(id_trakt)",
   )
   override suspend fun getAll(): List<Show>
 
