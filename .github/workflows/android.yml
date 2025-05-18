@@ -9,7 +9,7 @@ jobs:
   verify-lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Run ktlint
@@ -18,7 +18,7 @@ jobs:
   verify-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup JDK
