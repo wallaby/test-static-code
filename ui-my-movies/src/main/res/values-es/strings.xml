@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">Historia</string>
+  <string name="menuMyMovies">Historial</string>
   <string name="menuWatchlistMovies">Pendientes</string>
   <string name="menuHidden">Ocultos</string>
   <string name="textMyMoviesEmpty">Tu colección de películas actualmente está vacía.\n\nVisita la pestaña <b>Descubrir</b> para añadir tu primera película.</string>

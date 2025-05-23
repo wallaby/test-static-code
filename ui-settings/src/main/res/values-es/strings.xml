@@ -87,7 +87,7 @@
   <string name="textSettingsSpoilersShowsRatingsNotCollectedDescription">Ocultar <b>valoración</b> de series que no están en tu Colección</string>
   <string name="textSettingsSpoilersMovies">Películas</string>
   <string name="textSettingsSpoilersMoviesSummary">Administrar ajustes de spoiler para películas.</string>
-  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Historia</string>
+  <string name="textSettingsSpoilersMoviesOverviewsMyTitle">Historial</string>
   <string name="textSettingsSpoilersMoviesOverviewsMyDescription">Ocultar <b>descripción</b> de películas añadidas al historial</string>
   <string name="textSettingsSpoilersMoviesRatingsMyDescription">Ocultar <b>valoración</b> de películas añadidas al historial</string>
   <string name="textSettingsSpoilersMoviesOverviewsWatchlistTitle">Pendientes</string>
