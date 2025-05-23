@@ -47,7 +47,11 @@ class AnnouncementManager @Inject constructor(
     val now = nowUtc()
     val nowMillis = now.toMillis()
     val limit = now.plusMonths(3)
-    WorkManager.getInstance(context).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
+
+    WorkManager
+      .getInstance(context)
+      .cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
+
     Timber.d("Current time: ${logFormatter.format(now)} UTC")
 
     val settings = settingsRepository.load()
@@ -56,8 +60,14 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val myShows = localSource.myShows.getAll()
-    val watchlistShows = localSource.watchlistShows.getAll()
+    val myShows = localSource.myShows
+      .getAll()
+      .distinctBy { it.idTrakt }
+
+    val watchlistShows = localSource.watchlistShows
+      .getAll()
+      .distinctBy { it.idTrakt }
+
     if (myShows.isEmpty() && watchlistShows.isEmpty()) {
       Timber.d("Nothing to process. Exiting...")
       return
@@ -159,6 +169,7 @@ class AnnouncementManager @Inject constructor(
 
     val movies = localSource.watchlistMovies
       .getAll()
+      .distinctBy { it.idTrakt }
       .map { mappers.movie.fromDatabase(it) }
 
     if (movies.isEmpty()) {

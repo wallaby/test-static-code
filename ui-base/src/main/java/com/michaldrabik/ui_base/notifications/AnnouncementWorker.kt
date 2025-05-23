@@ -34,11 +34,13 @@ class AnnouncementWorker(
   override fun doWork(): Result {
     val color = R.color.colorNotificationDark
 
+    val title = inputData.getString(DATA_TITLE)
+
     val notification = NotificationCompat
       .Builder(applicationContext, inputData.getString(DATA_CHANNEL)!!)
       .setContentIntent(createIntent())
       .setSmallIcon(R.drawable.ic_notification)
-      .setContentTitle(inputData.getString(DATA_TITLE))
+      .setContentTitle(title)
       .setContentText(inputData.getString(DATA_CONTENT))
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
       .setAutoCancel(true)
@@ -61,9 +63,14 @@ class AnnouncementWorker(
       }
     }
 
+    val notificationId = when {
+      !title.isNullOrBlank() -> title.hashCode()
+      else -> Random.nextInt()
+    }
+
     NotificationManagerCompat
       .from(applicationContext)
-      .notify(Random.nextInt(), notification.build())
+      .notify(notificationId, notification.build())
 
     return Result.success()
   }

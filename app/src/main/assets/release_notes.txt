@@ -1,2 +1,2 @@
-- Handle Trakt sync dropped shows import
-- Updated language translations
+* Possible fix for duplicated notifications affecting some of the users
+* Updated language translations
