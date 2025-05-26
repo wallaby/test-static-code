@@ -54,7 +54,9 @@ class PersonDetailsCreditsCase @Inject constructor(
       watchlistShowsIdsAsync,
       watchlistMoviesIdsAsync,
     )
-    val collectionIds = (myShowsIds + myMoviesIds + watchlistShowsId + watchlistMoviesIds).toSet()
+
+    val showsCollectionIds = (myShowsIds + watchlistShowsId).toSet()
+    val moviesCollectionIds = (myMoviesIds + watchlistMoviesIds).toSet()
 
     val credits = peopleRepository.loadCredits(person)
     credits
@@ -62,8 +64,7 @@ class PersonDetailsCreditsCase @Inject constructor(
         val filterByRelease = (it.releaseDate != null || (it.releaseDate == null && it.isUpcoming))
 
         val filterByCollection = if (onlyCollection) {
-          it.show?.traktId in collectionIds ||
-            it.movie?.traktId in collectionIds
+          it.show?.traktId in showsCollectionIds || it.movie?.traktId in moviesCollectionIds
         } else {
           true
         }
