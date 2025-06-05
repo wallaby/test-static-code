@@ -31,17 +31,17 @@ class CalendarRecentsCase @Inject constructor(
   override val filter: CalendarRecentsFilter,
   override val grouper: CalendarRecentsGrouper,
 ) : CalendarItemsCase(
-    dispatchers,
-    localSource,
-    mappers,
-    showsRepository,
-    translationsRepository,
-    spoilersRepository,
-    filtersRepository,
-    imagesProvider,
-    dateFormatProvider,
-    watchlistAppender,
-  ) {
+  dispatchers,
+  localSource,
+  mappers,
+  showsRepository,
+  translationsRepository,
+  spoilersRepository,
+  filtersRepository,
+  imagesProvider,
+  dateFormatProvider,
+  watchlistAppender,
+) {
 
   override fun sortEpisodes() =
     compareByDescending<Episode> { it.firstAired }

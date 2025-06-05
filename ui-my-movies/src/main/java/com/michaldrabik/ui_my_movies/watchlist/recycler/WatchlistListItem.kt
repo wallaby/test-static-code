@@ -21,8 +21,8 @@ sealed class WatchlistListItem(
     val dateFormat: DateTimeFormatter? = null,
     val fullDateFormat: DateTimeFormatter? = null,
   ) : WatchlistListItem(
-      movie = movie,
-      image = image,
-      isLoading = isLoading,
-    )
+    movie = movie,
+    image = image,
+    isLoading = isLoading,
+  )
 }
