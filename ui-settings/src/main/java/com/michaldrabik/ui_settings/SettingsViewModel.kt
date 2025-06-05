@@ -18,24 +18,24 @@ class SettingsViewModel @Inject constructor() :
   ViewModel(),
   ChannelsDelegate by DefaultChannelsDelegate() {
 
-    private val premiumState = MutableStateFlow(false)
-    private val filterState = MutableStateFlow<SettingsFilter?>(null)
+  private val premiumState = MutableStateFlow(false)
+  private val filterState = MutableStateFlow<SettingsFilter?>(null)
 
-    fun setFilter(filter: SettingsFilter?) {
-      filterState.value = filter
-    }
-
-    val uiState = combine(
-      premiumState,
-      filterState,
-    ) { s1, s2 ->
-      SettingsUiState(
-        isPremium = s1,
-        filter = s2,
-      )
-    }.stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-      initialValue = SettingsUiState(),
-    )
+  fun setFilter(filter: SettingsFilter?) {
+    filterState.value = filter
   }
+
+  val uiState = combine(
+    premiumState,
+    filterState,
+  ) { s1, s2 ->
+    SettingsUiState(
+      isPremium = s1,
+      filter = s2,
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = SettingsUiState(),
+  )
+}
